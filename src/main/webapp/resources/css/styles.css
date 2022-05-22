@@ -1,1 +1,12 @@
-@charset "ISO-8859-1";
+.body--login {
+	background-image: linear-gradient(rgba(0, 75, 138, .7) 50%,
+		rgba(0, 75, 138, .7) 50%), url('../img/login-bg.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 768px) {
+	.body--login {
+		height: 100vh;
+	}
+}

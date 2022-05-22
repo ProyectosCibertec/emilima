@@ -1,4 +1,4 @@
-package utils.connections;
+package com.emilima.serviciodocumental.util.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,10 +15,9 @@ public class MySQLConnection {
 			.directory(System.getProperty("user.home"))
 			.filename(".env")
 			.load();
-	private final String MYSQL_URL = dotenv.get("MYSQL_DB_URL");
-	private final String MYSQL_USER = dotenv.get("MYSQL_DB_USER");
-	private final String MYSQL_PASSWORD = dotenv.get("MYSQL_DB_PASSWORD");
-	
+	final String MYSQL_URL = dotenv.get("MYSQL_DB_URL");
+	final String MYSQL_USER = dotenv.get("MYSQL_DB_USER");
+	final String MYSQL_PASSWORD = dotenv.get("MYSQL_DB_PASSWORD");
 	
 	public Connection getConnection() {
 		try {
