@@ -1,8 +1,17 @@
+body {
+	background-color: #F7F7F7;
+}
+
 .body--login {
 	background-image: linear-gradient(rgba(0, 75, 138, .7) 50%,
 		rgba(0, 75, 138, .7) 50%), url('../img/login-bg.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
+}
+
+.main-content {
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 @media screen and (min-width: 768px) {

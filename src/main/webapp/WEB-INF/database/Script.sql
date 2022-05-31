@@ -1,6 +1,7 @@
 -- -----------------------------------------------------
 -- Schema emilima
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `emilima`;
 CREATE SCHEMA IF NOT EXISTS `emilima` DEFAULT CHARACTER SET utf8 ;
 USE `emilima` ;
 
@@ -80,3 +81,8 @@ CREATE TABLE IF NOT EXISTS `emilima`.`document` (
     ON DELETE set null
     ON UPDATE set null)
 ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
+
+INSERT INTO document(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdf", "asdf", "2022-03-03", NULL);
+INSERT INTO document(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdfa", "asdf", "2022-03-03", NULL);
+
+SELECT * FROM document;
