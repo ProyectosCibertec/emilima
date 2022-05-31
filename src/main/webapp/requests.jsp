@@ -22,7 +22,7 @@
 		<div class="row h-100">
 			<div
 				class="d-flex flex-column flex-shrink-0 p-3 text-dark bg-white shadow-sm h-100 col-md-3">
-				<a href="${pageContext.request.contextPath}/"
+				<a href="${pageContext.request.contextPath}"
 					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
 					<img alt="Emilima logo"
 					src="${pageContext.request.contextPath}/resources/img/logo-emilima-color.png"
@@ -31,28 +31,28 @@
 				<hr>
 				<ul class="nav nav-pills flex-column mb-auto">
 					<li class="nav-item"><a
-						href="${pageContext.request.contextPath}/" class="nav-link active"
+						href="${pageContext.request.contextPath}" class="nav-link text-dark"
 						aria-current="page"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#home" /></svg> Inicio
+						<use xlink:href="#index" /></svg> Inicio
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/documentos/listar"
 						class="nav-link text-dark"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#speedometer2" /></svg> Documentos
+						<use xlink:href="#documents" /></svg> Documentos
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/solicitudes/listar"
-						class="nav-link text-dark"> <svg class="bi me-2" width="16"
+						class="nav-link active"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#table" /></svg> Solicitudes
+						<use xlink:href="#requests" /></svg> Solicitudes
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/usuarios/listar"
 						class="nav-link text-dark"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#grid" /></svg> Usuarios
+						<use xlink:href="#users" /></svg> Usuarios
 					</a></li>
 				</ul>
 				<hr>
@@ -72,10 +72,8 @@
 				</div>
 			</div>
 			<div class="col-md-9 py-5 main-content">
-				<h1>Documentos Emilima</h1>
-				<img alt="Documents animation"
-					src="${pageContext.request.contextPath}/resources/img/banner.png"
-					class="w-100">
+				<h1>Documentos</h1>
+				
 			</div>
 		</div>
 	</div>
