@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS `emilima`.`document` (
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT NULL,
   `upload_date` DATETIME NULL,
+  `document_name` TEXT NULL,
   `request_id` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
@@ -82,7 +83,18 @@ CREATE TABLE IF NOT EXISTS `emilima`.`document` (
     ON UPDATE set null)
 ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 
-INSERT INTO document(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdf", "asdf", "2022-03-03", NULL);
-INSERT INTO document(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdfa", "asdf", "2022-03-03", NULL);
+INSERT INTO `document`(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdf", "asdf", "2022-03-03", NULL);
+INSERT INTO `document`(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdfa", "asdf", "2022-03-03", NULL);
+INSERT INTO `document`(`name`, `description`, `upload_date`, `request_id`) VALUES ("ghg", "asdf", "2022-03-03", NULL);
 
-SELECT * FROM document;
+INSERT INTO `role`(`name`, `description`) VALUES ("Administrador", "Usuario con permisos globales.");
+INSERT INTO `role`(`name`, `description`) VALUES ("Unidad orgánica", "Usuario con capacidad de registrar solicitudes de documentación.");
+INSERT INTO `role`(`name`, `description`) VALUES ("Técnico", "Usuario con capacidad de administrar solicitudes y documentos.");
+INSERT INTO `role`(`name`, `description`) VALUES ("Secretario general", "Usuario con capacidad de autorizar solicitudes y administrar las entidades.");
+
+INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("admin", "admin", "admin@emilima.com.pe", 1);
+INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("admin1", "admin", "admin@emilima.com.pe", 1);
+
+SELECT * FROM `document`;
+SELECT * FROM `role`;
+SELECT * FROM `user`;

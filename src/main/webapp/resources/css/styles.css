@@ -14,6 +14,12 @@ body {
 	overflow-x: hidden;
 }
 
+.documents-list__item__edit-button,
+.documents-list__item__delete-button,
+.documents-list__item__download-button {
+	cursor: pointer;
+}
+
 @media screen and (min-width: 768px) {
 	.body--login {
 		height: 100vh;

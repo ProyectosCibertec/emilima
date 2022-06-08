@@ -6,11 +6,10 @@ public class Role {
 	private String description;
 
 	public Role() {
-		super();
+		
 	}
 
 	public Role(int id, String name, String description) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
