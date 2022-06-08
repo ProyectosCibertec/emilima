@@ -7,15 +7,14 @@ public class Request {
 	private String name;
 	private String description;
 	private Date creationDate;
-	private char state;
+	private String state;
 	private String userId;
 
 	public Request() {
-		super();
+		
 	}
 
-	public Request(int id, String name, String description, Date creationDate, char state, String userId) {
-		super();
+	public Request(int id, String name, String description, Date creationDate, String state, String userId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -56,11 +55,11 @@ public class Request {
 		this.creationDate = creationDate;
 	}
 
-	public char getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(char state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

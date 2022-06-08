@@ -20,6 +20,9 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/Document.js"
 	type="text/javascript"></script>
+<script>
+	let contextPath = "${pageContext.request.contextPath}"
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/scripts.js"
 	type="text/javascript"></script>
 </head>
@@ -85,12 +88,10 @@
 						documento</button>
 				</div>
 
-				<form class="my-4">
-					<div>
+					<div class="my-4">
 						<input type="text" class="form-control w-100"
 							id="search-document-name" placeholder="Buscar documentos">
 					</div>
-				</form>
 				<section class="documents-list container">
 					<div class="row g-2" id="documents-list-grid">
 						<!--
@@ -151,7 +152,7 @@
 						<div class="mb-3">
 							<label for="document-upload-date" class="form-label">Fecha
 								de subida</label> <input type="date" class="form-control"
-								name="document-date" id="document-upload-date">
+								name="document-date" id="document-upload-date" readonly>
 						</div>
 						<div class="mb-3">
 							<input class="form-control" type="file" id="document-file"
@@ -170,7 +171,8 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" id="register-document-accept-button">Aceptar</button>
+					<button type="button" class="btn btn-primary"
+						id="register-document-accept-button">Aceptar</button>
 				</div>
 			</div>
 		</div>

@@ -7,11 +7,10 @@ public class User {
 	private int roleId;
 
 	public User() {
-		super();
+		
 	}
 
 	public User(String username, String password, String email, int roleId) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.email = email;
