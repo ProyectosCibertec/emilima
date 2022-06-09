@@ -50,10 +50,12 @@ function users() {
 	});
 }
 
-function getUsers() {
-	let result = $.get(`${contextPath}/usuarios/`);
+async function getDocumentsInView() {
+	$("#documents-list-grid").empty();
 
-	return result;
+	let documents = await getDocuments();
+
+	showDocumentsInView(documents);
 }
 
 async function getUsersInView() {
@@ -62,12 +64,6 @@ async function getUsersInView() {
 	let users = await getUsers();
 
 	showUsersInView(users);
-}
-
-function getRoles() {
-	let result = $.get(`${contextPath}/roles/`)
-
-	return result;
 }
 
 function registerUser() {
@@ -98,7 +94,7 @@ async function showUsersInView(users) {
 							<td>${usersRole}</td>
 							<td>
 								<button class="btn btn-primary">Actualizar</button>
-									<button class="btn btn-primary users-table__body__item__delete-button" onclick="deleteUser('${user.username}')">Eliminar</button>
+									<button class="btn btn-primary users-table__body__item__delete-button" onclick="deleteUserOperation('${user.username}')">Eliminar</button>
 							</td>
 						</tr>
 		`);
@@ -113,14 +109,6 @@ function searchDocumentsInView() {
 					.includes($("#search-document-name").val()));
 		}
 	)
-}
-
-function getDocuments() {
-	$("#documents-list-grid").empty();
-
-	$.get(`${contextPath}/documentos/`).done(function(documents) {
-		showDocumentsInView(documents);
-	});
 }
 
 function showDocumentsInView(documents) {
@@ -140,7 +128,7 @@ function showDocumentsInView(documents) {
 											<div class="row align-items-center">
 												<div class="col flex-column">
 													<i class="bi bi-pencil-fill documents-list__item__edit-button" style="font-size: 1.5rem;"></i>
-													<i class="bi bi-x documents-list__item__delete-button" style="font-size: 1.5rem;" document-id="${document.id}"></i>
+													<i class="bi bi-x documents-list__item__delete-button" style="font-size: 1.5rem;" onclick='deleteDocumentOperation(${document.id})'></i>
 												</div>
 												<div class="col">
 													<i class="bi bi-download documents-list__item__download-button" style="font-size: 2.5rem;"></i>
@@ -164,23 +152,53 @@ function registerDocument() {
 	formData.append("documentFile", $("#document-file")[0].files[0]);
 	formData.append("requestId", $("#document-request-id").val());
 
-	$.ajax({
+	return $.ajax({
 		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false
 	})
 }
 
+async function deleteDocumentOperation(id) {
+	let documentsDeleted = await deleteDocument(id);
+
+	getDocumentsInView();
+}
+
+async function deleteUserOperation(username) {
+	let usersDeleted = await deleteUser(username);
+	
+	if (usersDeleted == 1) {
+		// If there's time to make an alert to the user, this will be implemented later.
+	}
+
+	getUsersInView();
+}
+
+function getDocuments() {
+	$.get(`${contextPath}/documentos/`).done(function(documents) {
+		showDocumentsInView(documents);
+	});
+}
+
 function deleteDocument(id) {
-	let formData = new FormData();
-
-	formData.append("documentId", id);
-
-	$.ajax({
-		url: `${contextPath}/documentos/`, method: "DELETE", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false
+	return $.ajax({
+		url: `${contextPath}/documentos/${id}`, method: "DELETE"
 	})
 }
 
 function deleteUser(username) {
-	$.ajax({
-		url: `${contextPath}/usuarios/`, method: "DELETE", data: {username: username}
+	return $.ajax({
+		url: `${contextPath}/usuarios/${username}`, method: "DELETE"
 	})
+}
+
+function getUsers() {
+	let result = $.get(`${contextPath}/usuarios/`);
+
+	return result;
+}
+
+function getRoles() {
+	let result = $.get(`${contextPath}/roles/`)
+
+	return result;
 }

@@ -13,5 +13,5 @@ public interface IUserDAO {
 
 	int edit(User user);
 
-	int delete(int id);
+	int delete(String username);
 }
