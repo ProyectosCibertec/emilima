@@ -94,6 +94,7 @@ INSERT INTO `role`(`name`, `description`) VALUES ("Secretario general", "Usuario
 
 INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("admin", "admin", "admin@emilima.com.pe", 1);
 INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("admin1", "admin", "admin@emilima.com.pe", 1);
+INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("user", "admin", "admin@emilima.com.pe", 2);
 
 SELECT * FROM `document`;
 SELECT * FROM `role`;

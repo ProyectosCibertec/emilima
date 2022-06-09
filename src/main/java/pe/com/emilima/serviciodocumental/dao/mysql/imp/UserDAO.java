@@ -182,7 +182,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public int delete(int id) {
+	public int delete(String username) {
 		// TODO Auto-generated method stub
 		int result = 0;
 		Connection connection = null;
@@ -190,9 +190,9 @@ public class UserDAO implements IUserDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement("DELETE FROM user WHERE id = ?");
+			preparedStatement = connection.prepareStatement("DELETE FROM user WHERE username = ?");
 
-			preparedStatement.setInt(1, id);
+			preparedStatement.setString(1, username);
 
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException se) {

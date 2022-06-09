@@ -91,7 +91,6 @@ public class DocumentsServlet extends HttpServlet {
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- DELETE: DocumentsServlet ---");
 		String pathInfo = request.getPathInfo();
-
 		switch (pathInfo) {
 		case "/":
 			deleteDocument(request, response);
@@ -174,12 +173,17 @@ public class DocumentsServlet extends HttpServlet {
 
 	private void deleteDocument(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String id = request.getParameter("documentId");
+			Gson gson = new Gson();
+			int documentId = Integer.parseInt(request.getPathInfo().substring(1));
+			int documentsDeleted = documentService.delete(documentId);
+			String usersJson = gson.toJson(documentsDeleted);
 
-			documentService.delete(Integer.parseInt(id));
-		} catch (NumberFormatException nfe) {
-			logger.info(MessageFormat.format("NumberFormatException: {0}", nfe.getMessage()));
-			nfe.printStackTrace();
+			response.setStatus(200);
+			response.setHeader("Content-Type", "application/json");
+			response.getOutputStream().println(usersJson);
+		} catch (IOException ioe) {
+			logger.info(MessageFormat.format("IOException: {0}", ioe.getMessage()));
+			ioe.printStackTrace();
 		} catch (Exception e) {
 			logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
 			e.printStackTrace();
@@ -187,6 +191,6 @@ public class DocumentsServlet extends HttpServlet {
 	}
 
 	private void updateDocument(HttpServletRequest request, HttpServletResponse response) {
-		
+
 	}
 }
