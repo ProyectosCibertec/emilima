@@ -18,9 +18,9 @@ public class UserService implements IUserDAO {
 	}
 
 	@Override
-	public User get(int id) {
+	public User get(String username) {
 		// TODO Auto-generated method stub
-		return userDao.get(id);
+		return userDao.get(username);
 	}
 
 	@Override
@@ -41,4 +41,8 @@ public class UserService implements IUserDAO {
 		return userDao.delete(username);
 	}
 
+	@Override
+	public User login(String username, String password) {
+		return userDao.login(username, password);
+	}
 }

@@ -7,11 +7,13 @@ import pe.com.emilima.serviciodocumental.dto.User;
 public interface IUserDAO {
 	List<User> list();
 
-	User get(int id);
+	User get(String username);
 
 	int add(User user);
 
 	int edit(User user);
 
 	int delete(String username);
+
+	User login(String username, String password);
 }

@@ -2,7 +2,6 @@ package pe.com.emilima.serviciodocumental.servlet;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +59,7 @@ public class UsersServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- POST: UsersServlet ---");
+		registerUser(request, response);
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -102,7 +102,30 @@ public class UsersServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	private void registerUser(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Gson gson = new Gson();
+			User user = new User();
+			user.setUsername(request.getParameter("username"));
+			user.setPassword(request.getParameter("password"));
+			user.setEmail(request.getParameter("email"));
+			user.setRoleId(Integer.parseInt(request.getParameter("roleId")));
+			int usersRegistered = userService.add(user);
+			String usersJson = gson.toJson(usersRegistered);
 
+			response.setStatus(200);
+			response.setHeader("Content-Type", "application/json");
+			response.getOutputStream().println(usersJson);
+		} catch (IOException ioe) {
+			logger.info(MessageFormat.format("IOException: {0}", ioe.getMessage()));
+			ioe.printStackTrace();
+		} catch (Exception e) {
+			logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+			e.printStackTrace();
+		}
+	}
+	
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Gson gson = new Gson();

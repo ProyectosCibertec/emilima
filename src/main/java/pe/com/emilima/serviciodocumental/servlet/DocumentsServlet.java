@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 
 import pe.com.emilima.serviciodocumental.dto.Document;
 import pe.com.emilima.serviciodocumental.service.mysql.DocumentService;
-import pe.com.emilima.serviciodocumental.util.http.ServiceResponse;
 
 /**
  * Servlet implementation class DocumentsServlet
@@ -60,45 +59,19 @@ public class DocumentsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- POST: DocumentsServlet ---");
-		String pathInfo = request.getPathInfo();
-
-		switch (pathInfo) {
-		case "/":
-			addDocument(request, response);
-			break;
-		default:
-			showErrorPage405(request, response);
-			break;
-		}
+		addDocument(request, response);
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- PUT: DocumentsServlet ---");
-		String pathInfo = request.getPathInfo();
-
-		switch (pathInfo) {
-		case "/":
-			updateDocument(request, response);
-			break;
-		default:
-			showErrorPage405(request, response);
-			break;
-		}
+		updateDocument(request, response);
 	}
-
+	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- DELETE: DocumentsServlet ---");
-		String pathInfo = request.getPathInfo();
-		switch (pathInfo) {
-		case "/":
-			deleteDocument(request, response);
-			break;
-		default:
-			showErrorPage405(request, response);
-			break;
-		}
+		deleteDocument(request, response);
 	}
 
 	private void showList(HttpServletRequest request, HttpServletResponse response)
