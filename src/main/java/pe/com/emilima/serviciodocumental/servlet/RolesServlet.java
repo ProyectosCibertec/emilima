@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import pe.com.emilima.serviciodocumental.dto.Role;
-import pe.com.emilima.serviciodocumental.dto.User;
 import pe.com.emilima.serviciodocumental.service.mysql.RoleService;
 
 /**

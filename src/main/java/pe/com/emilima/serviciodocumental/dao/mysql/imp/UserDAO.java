@@ -60,7 +60,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public User get(int id) {
+	public User get(String username) {
 		// TODO Auto-generated method stub
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -69,8 +69,8 @@ public class UserDAO implements IUserDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE id = ?");
-			preparedStatement.setInt(1, id);
+			preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username = ?");
+			preparedStatement.setString(1, username);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -109,7 +109,7 @@ public class UserDAO implements IUserDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement("INSERT INTO user(`name`, `description`, `upload_date`, `request_id`) VALUES (?, ?, ?, ?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO user(`username`, `password`, `email`, `role_id`) VALUES (?, ?, ?, ?)");
 
 			preparedStatement.setString(1, user.getUsername());
 			preparedStatement.setString(2, user.getPassword());
@@ -216,6 +216,45 @@ public class UserDAO implements IUserDAO {
 		}
 
 		return result;
+	}
+	
+	@Override
+	public User login(String username, String password) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		User user = null;
+		
+		try {
+			connection = new MySQLConnection().getConnection();
+			preparedStatement = connection.prepareStatement("SELECT password FROM user WHERE username = ?");
+			preparedStatement.setString(1, username);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+				if (resultSet.getString(1).equals(password)) {
+					user = get(username);
+				}
+			}
+		} catch (SQLException se) {
+			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
+			logger.info(MessageFormat.format("SQL state: {0}", se.getSQLState()));
+			se.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException se) {
+				logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
+				logger.info(MessageFormat.format("SQL state: {0}", se.getSQLState()));
+				se.printStackTrace();
+			} catch (Exception e) {
+				logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+				e.printStackTrace();
+			}
+		}
+		
+		return user;
 	}
 	
 }

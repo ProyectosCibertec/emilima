@@ -21,7 +21,7 @@ function app() {
 function documents() {
 	let currentDate = new Date().toJSON().substring(0, Number.parseInt(new Date().toJSON().indexOf("T")));
 
-	getDocuments();
+	getDocumentsInView();
 
 	$("#document-upload-date").val(currentDate);
 
@@ -40,13 +40,18 @@ function requests() {
 
 function users() {
 	getUsersInView();
+	getRolesInView();
 
 	$("#register-user-accept-button").click(function() {
-		registerUser();
+		registerUserInView();
 	});
 
 	$("#search-user-name").keyup(function() {
 		searchUsersInView();
+	});
+
+	$("select[name='user-rol']").focus(function() {
+		getRolesInView();
 	});
 }
 
@@ -66,8 +71,12 @@ async function getUsersInView() {
 	showUsersInView(users);
 }
 
-function registerUser() {
+async function getRolesInView() {
+	$("select[name='user-rol']").empty();
 
+	let roles = await getRoles();
+
+	showRolesInView(roles);
 }
 
 function searchUsersInView() {
@@ -93,7 +102,7 @@ async function showUsersInView(users) {
 							<td>${user.email}</td>
 							<td>${usersRole}</td>
 							<td>
-								<button class="btn btn-primary">Actualizar</button>
+								<button class="btn btn-primary users-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-user-modal" username="${user.username}">Actualizar</button>
 									<button class="btn btn-primary users-table__body__item__delete-button" onclick="deleteUserOperation('${user.username}')">Eliminar</button>
 							</td>
 						</tr>
@@ -143,6 +152,23 @@ function showDocumentsInView(documents) {
 	});
 }
 
+function showRolesInView(roles) {
+	roles.forEach(function(rol) {
+		$("select[name='user-rol']").append(`<option value="${rol.id}">${rol.name}</option>`);
+	});
+}
+
+function registerUserInView() {
+	let user = {
+		username: $("#user-name").val(),
+		password: $("#user-password").val(),
+		email: $("#user-email").val(),
+		roleId: $("#user-rol").val()
+	};
+
+	registerUser(user);
+}
+
 function registerDocument() {
 	let formData = new FormData();
 
@@ -157,6 +183,10 @@ function registerDocument() {
 	})
 }
 
+/**
+ * Operations (HTML events)
+ */
+
 async function deleteDocumentOperation(id) {
 	let documentsDeleted = await deleteDocument(id);
 
@@ -165,7 +195,7 @@ async function deleteDocumentOperation(id) {
 
 async function deleteUserOperation(username) {
 	let usersDeleted = await deleteUser(username);
-	
+
 	if (usersDeleted == 1) {
 		// If there's time to make an alert to the user, this will be implemented later.
 	}
@@ -173,10 +203,24 @@ async function deleteUserOperation(username) {
 	getUsersInView();
 }
 
+function editUserOperation(username) {
+	let usersDeleted = deleteUser(username);
+
+	if (usersDeleted == 1) {
+		// If there's time to make an alert to the user, this will be implemented later.
+	}
+
+	getUsersInView();
+}
+
+/**
+ * Asynchronous operations
+ */
+
 function getDocuments() {
-	$.get(`${contextPath}/documentos/`).done(function(documents) {
-		showDocumentsInView(documents);
-	});
+	let result = $.get(`${contextPath}/documentos/`);
+
+	return result;
 }
 
 function deleteDocument(id) {
@@ -185,10 +229,23 @@ function deleteDocument(id) {
 	})
 }
 
+function registerUser(user) {
+	let result = $.ajax({
+		url: `${contextPath}/usuarios/`, method: "POST", data: {
+			username: user.username,
+			password: user.password,
+			email: user.email,
+			roleId: user.roleId
+		}
+	})
+
+	return result;
+}
+
 function deleteUser(username) {
 	return $.ajax({
 		url: `${contextPath}/usuarios/${username}`, method: "DELETE"
-	})
+	});
 }
 
 function getUsers() {
@@ -198,7 +255,7 @@ function getUsers() {
 }
 
 function getRoles() {
-	let result = $.get(`${contextPath}/roles/`)
+	let result = $.get(`${contextPath}/roles/`);
 
 	return result;
 }
