@@ -16,6 +16,10 @@ function app() {
 	if (pathnames.includes("usuarios")) {
 		users();
 	}
+
+	$("#logout-button").click(function() {
+		logout();
+	});
 }
 
 function documents() {
@@ -216,6 +220,14 @@ function editUserOperation(username) {
 /**
  * Asynchronous operations
  */
+
+function logout() {
+	$.ajax({
+		url: `${contextPath}/logout`, method: "POST"
+	})
+
+	location.reload();
+}
 
 function getDocuments() {
 	let result = $.get(`${contextPath}/documentos/`);

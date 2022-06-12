@@ -1,4 +1,4 @@
-<%@ page session="false" language="java"
+<%@ page session="true" language="java"
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -13,7 +13,16 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 <link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/styles.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/Document.js"
+	type="text/javascript"></script>
+<script>
+	let contextPath = "${pageContext.request.contextPath}"
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/scripts.js"
 	type="text/javascript"></script>
 </head>
@@ -57,17 +66,17 @@
 				</ul>
 				<hr>
 				<div class="dropdown">
-					<a href="#"
+					<button
 						class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
 						id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 						<img src="https://github.com/mdo.png" alt="" width="32"
-						height="32" class="rounded-circle me-2"> <strong>username</strong>
-					</a>
+							height="32" class="rounded-circle me-2"> <strong>${ sessionScope.loginedUser.username }</strong>
+					</button>
 					<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 						aria-labelledby="dropdownUser1">
-						<li><a class="dropdown-item" href="#">Configuración</a></li>
+						<li><button class="dropdown-item">Configuración</button></li>
 						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="#">Salir</a></li>
+						<li><button class="dropdown-item" id="logout-button">Salir</button></li>
 					</ul>
 				</div>
 			</div>
