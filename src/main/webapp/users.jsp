@@ -1,4 +1,4 @@
-<%@ page session="false" language="java"
+<%@ page session="true" language="java"
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -66,17 +66,17 @@
 				</ul>
 				<hr>
 				<div class="dropdown">
-					<a href="#"
+					<button
 						class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
 						id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 						<img src="https://github.com/mdo.png" alt="" width="32"
-						height="32" class="rounded-circle me-2"> <strong>username</strong>
-					</a>
+							height="32" class="rounded-circle me-2"> <strong>${ sessionScope.loginedUser.username }</strong>
+					</button>
 					<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 						aria-labelledby="dropdownUser1">
-						<li><a class="dropdown-item" href="#">Configuración</a></li>
+						<li><button class="dropdown-item">Configuración</button></li>
 						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="#">Salir</a></li>
+						<li><button class="dropdown-item" id="logout-button">Salir</button></li>
 					</ul>
 				</div>
 			</div>
@@ -173,13 +173,13 @@
 					<form id="edit-user-form-data">
 						<div class="mb-3">
 							<label for="user-name" class="form-label">Nombre de
-								usuario</label> <input type="text" class="form-control" id="edit-user-name"
-								name="user-name" required>
+								usuario</label> <input type="text" class="form-control"
+								id="edit-user-name" name="user-name" required>
 						</div>
 						<div class="mb-3">
 							<label for="user-password" class="form-label">Contraseña</label>
-							<input type="password" class="form-control" id="edit-user-password"
-								name="user-password" required>
+							<input type="password" class="form-control"
+								id="edit-user-password" name="user-password" required>
 						</div>
 						<div class="mb-3">
 							<label for="user-email" class="form-label">Email</label> <input

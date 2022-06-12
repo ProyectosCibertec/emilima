@@ -1,4 +1,4 @@
-<%@ page session="false" language="java"
+<%@ page session="true" language="java"
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -41,7 +41,7 @@
 							<h2 class="text-center text-light">Inicio de sesión</h2>
 						</div>
 						<div class="card-body">
-							<form action="/login" method="POST">
+							<form action="${pageContext.request.contextPath}/login" method="POST">
 								<div class="mb-3">
 									<label for="username" class="form-label">Usuario: </label> <input
 										class="form-control" id="username" name="username" type="text" />
