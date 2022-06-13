@@ -2,6 +2,10 @@ $(document).ready(function() {
 	app();
 });
 
+/**
+ * Document init
+ */
+
 function app() {
 	let pathnames = location.pathname.split("/");
 
@@ -21,6 +25,10 @@ function app() {
 		logout();
 	});
 }
+
+/**
+ * Controller
+ */
 
 function documents() {
 	let currentDate = new Date().toJSON().substring(0, Number.parseInt(new Date().toJSON().indexOf("T")));
@@ -48,6 +56,10 @@ function users() {
 
 	$("#register-user-accept-button").click(function() {
 		registerUserInView();
+	});
+
+	$("#edit-user-accept-button").click(function() {
+		editUserInView();
 	});
 
 	$("#search-user-name").keyup(function() {
@@ -83,6 +95,47 @@ async function getRolesInView() {
 	showRolesInView(roles);
 }
 
+async function registerUserInView() {
+	let user = {
+		username: $("#user-name").val(),
+		password: $("#user-password").val(),
+		email: $("#user-email").val(),
+		roleId: $("#user-rol").val()
+	};
+
+	let result = await registerUser(user);
+
+	if (result == 1) {
+		showSuccessAlert($("#register-user-modal .modal-body"), "Usuario creado correctamente");
+		$("#register-user-form-data").trigger("reset");
+		getUsersInView();
+	} else {
+		showDangerAlert($("#register-user-modal .modal-body"), "Hubo un error al crear el usuario");
+	}
+}
+
+async function editUserInView() {
+	let user = {
+		username: $("#edit-user-name").val(),
+		password: $("#edit-user-password").val(),
+		email: $("#edit-user-email").val(),
+		roleId: $("#edit-user-rol").val()
+	};
+
+	let result = await editUser(user);
+
+	if (result == 1) {
+		showSuccessAlert($("#edit-user-modal .modal-body"), "Usuario editado correctamente");
+		getUsersInView();
+	} else {
+		showDangerAlert($("#edit-user-modal .modal-body"), "Hubo un error al editar el usuario");
+	}
+}
+
+/**
+ * Search operation
+ */
+
 function searchUsersInView() {
 	$(".users-table__body__item").filter(
 		function() {
@@ -93,8 +146,22 @@ function searchUsersInView() {
 	)
 }
 
+function searchDocumentsInView() {
+	$(".documents-list__item").filter(
+		function() {
+			$(this).toggle(
+				$(this).children("div").children("div").children("div").children("div.col-md-7").children("h2.documents-list__item__title").text()
+					.includes($("#search-document-name").val()));
+		}
+	)
+}
+
+/**
+ * HTML DOM generation
+ */
+
 async function showUsersInView(users) {
-	let roles = await getRoles().then(data => data);
+	let roles = await getRoles();
 
 	users.forEach(function(user) {
 		let usersRole = roles.filter(role => role.id == user.roleId)[0].name;
@@ -106,7 +173,7 @@ async function showUsersInView(users) {
 							<td>${user.email}</td>
 							<td>${usersRole}</td>
 							<td>
-								<button class="btn btn-primary users-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-user-modal" username="${user.username}">Actualizar</button>
+								<button class="btn btn-primary users-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-user-modal" onclick="editUserOperation('${user.username}')">Actualizar</button>
 									<button class="btn btn-primary users-table__body__item__delete-button" onclick="deleteUserOperation('${user.username}')">Eliminar</button>
 							</td>
 						</tr>
@@ -114,14 +181,10 @@ async function showUsersInView(users) {
 	});
 }
 
-function searchDocumentsInView() {
-	$(".documents-list__item").filter(
-		function() {
-			$(this).toggle(
-				$(this).children("div").children("div").children("div").children("div.col-md-7").children("h2.documents-list__item__title").text()
-					.includes($("#search-document-name").val()));
-		}
-	)
+function showRolesInView(roles) {
+	roles.forEach(function(rol) {
+		$("select[name='user-rol']").append(`<option value="${rol.id}">${rol.name}</option>`);
+	});
 }
 
 function showDocumentsInView(documents) {
@@ -156,35 +219,34 @@ function showDocumentsInView(documents) {
 	});
 }
 
-function showRolesInView(roles) {
-	roles.forEach(function(rol) {
-		$("select[name='user-rol']").append(`<option value="${rol.id}">${rol.name}</option>`);
-	});
+function showDangerAlert(element, message) {
+	const container = document.createElement("div");
+	let alert = `
+	<div class="alert alert-danger" role="alert">
+	 ${message}
+	</div>
+	`
+	container.innerHTML = alert;
+	element.prepend(container);
+
+	setTimeout(function() {
+		container.remove();
+	}, 3000);
 }
 
-function registerUserInView() {
-	let user = {
-		username: $("#user-name").val(),
-		password: $("#user-password").val(),
-		email: $("#user-email").val(),
-		roleId: $("#user-rol").val()
-	};
+function showSuccessAlert(element, message) {
+	const container = document.createElement("div");
+	let alert = `
+	<div class="alert alert-success" role="alert">
+	 ${message}
+	</div>
+	`
+	container.innerHTML = alert;
+	element.prepend(container);
 
-	registerUser(user);
-}
-
-function registerDocument() {
-	let formData = new FormData();
-
-	formData.append("name", $("#document-name").val());
-	formData.append("description", $("#document-description").val());
-	formData.append("uploadDate", $("#document-upload-date").val());
-	formData.append("documentFile", $("#document-file")[0].files[0]);
-	formData.append("requestId", $("#document-request-id").val());
-
-	return $.ajax({
-		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false
-	})
+	setTimeout(function() {
+		container.remove();
+	}, 3000);
 }
 
 /**
@@ -201,20 +263,21 @@ async function deleteUserOperation(username) {
 	let usersDeleted = await deleteUser(username);
 
 	if (usersDeleted == 1) {
-		// If there's time to make an alert to the user, this will be implemented later.
+		showSuccessAlert($(".main-content"), "Usuario eliminado correctamente");
+	} else {
+		showDangerAlert($(".main-content"), "Hubo un error al eliminar el usuario")
 	}
 
 	getUsersInView();
 }
 
-function editUserOperation(username) {
-	let usersDeleted = deleteUser(username);
+async function editUserOperation(username) {
+	let user = await getUser(username);
 
-	if (usersDeleted == 1) {
-		// If there's time to make an alert to the user, this will be implemented later.
-	}
-
-	getUsersInView();
+	$("#edit-user-name").val(user.username);
+	$("#edit-user-password").val(user.password);
+	$("#edit-user-email").val(user.email);
+	$("#edit-user-rol").val(user.roleId);
 }
 
 /**
@@ -222,7 +285,7 @@ function editUserOperation(username) {
  */
 
 function logout() {
-	$.ajax({
+	let result = $.ajax({
 		url: `${contextPath}/logout`, method: "POST"
 	})
 
@@ -236,9 +299,11 @@ function getDocuments() {
 }
 
 function deleteDocument(id) {
-	return $.ajax({
+	let result = $.ajax({
 		url: `${contextPath}/documentos/${id}`, method: "DELETE"
-	})
+	});
+
+	return result;
 }
 
 function registerUser(user) {
@@ -254,14 +319,51 @@ function registerUser(user) {
 	return result;
 }
 
+function editUser(user) {
+	let result = $.ajax({
+		url: `${contextPath}/usuarios/`, method: "PUT", data: JSON.stringify({
+			username: user.username,
+			password: user.password,
+			email: user.email,
+			roleId: user.roleId
+		}), contentType: "application/json"
+	});
+
+	return result;
+}
+
+function registerDocument() {
+	let formData = new FormData();
+
+	formData.append("name", $("#document-name").val());
+	formData.append("description", $("#document-description").val());
+	formData.append("uploadDate", $("#document-upload-date").val());
+	formData.append("documentFile", $("#document-file")[0].files[0]);
+	formData.append("requestId", $("#document-request-id").val());
+
+	let result = $.ajax({
+		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false
+	});
+
+	return result;
+}
+
 function deleteUser(username) {
-	return $.ajax({
+	let result = $.ajax({
 		url: `${contextPath}/usuarios/${username}`, method: "DELETE"
 	});
+
+	return result;
 }
 
 function getUsers() {
 	let result = $.get(`${contextPath}/usuarios/`);
+
+	return result;
+}
+
+function getUser(username) {
+	let result = $.get(`${contextPath}/usuarios/?username=${username}`);
 
 	return result;
 }
