@@ -150,12 +150,12 @@ public class UserDAO implements IUserDAO {
 		try {
 			connection = new MySQLConnection().getConnection();
 			preparedStatement = connection.prepareStatement(
-					"UPDATE user SET name = ?, description = ?, upload_date = ?, request_id = ? WHERE id = ?");
+					"UPDATE user SET password = ?, email = ?, role_id = ? WHERE username = ?");
 
-			preparedStatement.setString(1, user.getUsername());
-			preparedStatement.setString(2, user.getPassword());
-			preparedStatement.setString(3, user.getEmail());
-			preparedStatement.setInt(4, user.getRoleId());
+			preparedStatement.setString(1, user.getPassword());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setInt(3, user.getRoleId());
+			preparedStatement.setString(4, user.getUsername());
 
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException se) {

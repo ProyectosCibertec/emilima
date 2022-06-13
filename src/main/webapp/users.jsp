@@ -150,9 +150,9 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Cancelar</button>
+						data-bs-dismiss="modal">Cerrar</button>
 					<button type="button" class="btn btn-primary"
-						id="register-user-accept-button">Aceptar</button>
+						id="register-user-accept-button">Registrar</button>
 				</div>
 			</div>
 		</div>
@@ -174,7 +174,7 @@
 						<div class="mb-3">
 							<label for="user-name" class="form-label">Nombre de
 								usuario</label> <input type="text" class="form-control"
-								id="edit-user-name" name="user-name" required>
+								id="edit-user-name" name="user-name" required disabled>
 						</div>
 						<div class="mb-3">
 							<label for="user-password" class="form-label">Contraseña</label>
@@ -197,9 +197,9 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Cancelar</button>
+						data-bs-dismiss="modal">Cerrar</button>
 					<button type="button" class="btn btn-primary"
-						id="edit-user-accept-button">Aceptar</button>
+						id="edit-user-accept-button">Editar</button>
 				</div>
 			</div>
 		</div>
