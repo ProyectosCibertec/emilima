@@ -33,7 +33,7 @@ public class DocumentDAO implements IDocumentDAO {
 
 			while (resultSet.next()) {
 				document = new Document(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-						resultSet.getDate(4), resultSet.getString(5), resultSet.getInt(6));
+						resultSet.getDate(4), resultSet.getInt(5));
 				documents.add(document);
 			}
 		} catch (SQLException se) {
@@ -75,7 +75,7 @@ public class DocumentDAO implements IDocumentDAO {
 
 			while (resultSet.next()) {
 				document = new Document(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-						resultSet.getDate(4), resultSet.getString(5), resultSet.getInt(6));
+						resultSet.getDate(4), resultSet.getInt(5));
 			}
 		} catch (SQLException se) {
 			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
@@ -109,13 +109,12 @@ public class DocumentDAO implements IDocumentDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement("INSERT INTO document(`name`, `description`, `upload_date`, `document_name`, `request_id`) VALUES (?, ?, ?, ?, ?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO document(`name`, `description`, `upload_date`, `file_id`) VALUES (?, ?, ?, ?)");
 
 			preparedStatement.setString(1, document.getName());
 			preparedStatement.setString(2, document.getDescription());
-			preparedStatement.setDate(3, java.sql.Date.valueOf(document.getUploadDate().toString()));
-			preparedStatement.setString(4, document.getDocumentName());
-			preparedStatement.setInt(5, document.getRequestId());
+			preparedStatement.setDate(3, new java.sql.Date(document.getUploadDate().getTime()));
+			preparedStatement.setInt(4, document.getFileId());
 
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException se) {
@@ -151,13 +150,12 @@ public class DocumentDAO implements IDocumentDAO {
 		try {
 			connection = new MySQLConnection().getConnection();
 			preparedStatement = connection.prepareStatement(
-					"UPDATE document SET name = ?, description = ?, upload_date = ?, document_name = ?, request_id = ? WHERE id = ?");
+					"UPDATE document SET name = ?, description = ?, upload_date = ?, file_id = ? WHERE id = ?");
 
 			preparedStatement.setString(1, document.getName());
 			preparedStatement.setString(2, document.getDescription());
 			preparedStatement.setDate(3, java.sql.Date.valueOf(document.getUploadDate().toString()));
-			preparedStatement.setString(4, document.getDocumentName());
-			preparedStatement.setInt(5, document.getRequestId());
+			preparedStatement.setInt(4, document.getFileId());
 			preparedStatement.setInt(6, document.getId());
 
 			result = preparedStatement.executeUpdate();

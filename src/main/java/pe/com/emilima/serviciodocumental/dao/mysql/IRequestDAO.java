@@ -14,4 +14,10 @@ public interface IRequestDAO {
 	int edit(Request request);
 
 	int delete(int id);
+	
+	int validate(int id);
+	
+	int approve(int id);
+	
+	int authorize(int id);
 }

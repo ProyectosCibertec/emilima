@@ -1,5 +1,6 @@
 package pe.com.emilima.serviciodocumental.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -27,10 +28,11 @@ import pe.com.emilima.serviciodocumental.service.mysql.DocumentService;
  */
 @WebServlet(description = "Servlet that manages all the access to documents' APIs and views.", urlPatterns = {
 		"/documentos", "/documentos/*" })
-@MultipartConfig(location = "./", maxFileSize = 1024 * 1024 * 10)
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 public class DocumentsServlet extends HttpServlet {
 	private final Logger logger = Logger.getLogger(DocumentsServlet.class.getName());
 	private static final long serialVersionUID = 1L;
+	private static final String fileUploadsLocation = System.getProperty("user.home") + File.separator + "file-uploads";
 
 	DocumentService documentService = new DocumentService();
 
@@ -48,11 +50,34 @@ public class DocumentsServlet extends HttpServlet {
 			showList(request, response);
 			break;
 		case "/":
+			if (request.getParameter("id") != null) {
+				getDocument(request, response);
+				break;
+			}
+			
 			getDocuments(request, response);
 			break;
 		default:
 			showErrorPage404(request, response);
 			break;
+		}
+	}
+
+	private void getDocument(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Gson gson = new Gson();
+			Document document = documentService.get(Integer.parseInt(request.getParameter("id")));
+			String documentJson = gson.toJson(document);
+
+			response.setStatus(200);
+			response.setHeader("Content-Type", "application/json");
+			response.getOutputStream().println(documentJson);
+		} catch (IOException ioe) {
+			logger.info(MessageFormat.format("IOException: {0}", ioe.getMessage()));
+			ioe.printStackTrace();
+		} catch (Exception e) {
+			logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+			e.printStackTrace();
 		}
 	}
 
@@ -67,7 +92,7 @@ public class DocumentsServlet extends HttpServlet {
 		logger.log(Level.INFO, "--- PUT: DocumentsServlet ---");
 		updateDocument(request, response);
 	}
-	
+
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- DELETE: DocumentsServlet ---");
@@ -83,12 +108,6 @@ public class DocumentsServlet extends HttpServlet {
 	private void showErrorPage404(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/error404.jsp");
-		requestDispatcher.forward(request, response);
-	}
-
-	private void showErrorPage405(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/error405.jsp");
 		requestDispatcher.forward(request, response);
 	}
 
@@ -114,21 +133,24 @@ public class DocumentsServlet extends HttpServlet {
 		try {
 			Document document = new Document();
 			String name = request.getParameter("name"), description = request.getParameter("description"),
-					uploadDate = request.getParameter("uploadDate"), requestId = request.getParameter("requestId");
+					uploadDate = request.getParameter("uploadDate");
 
-			if (name != null)
-				document.setName(name);
-			if (description != null)
-				document.setDescription(description);
-			if (uploadDate != null)
-				document.setUploadDate(new SimpleDateFormat("dd-MM-yyyy").parse(uploadDate));
-			if (requestId != null)
-				document.setRequestId(Integer.parseInt(requestId));
+			document.setName(name);
+			document.setDescription(description);
+			document.setUploadDate(new SimpleDateFormat("yyyy-MM-dd").parse(uploadDate));
 
 			Part documentFilePart = request.getPart("documentFile");
 			byte[] fileNameInBytes = documentFilePart.getSubmittedFileName().getBytes();
 			String fileName = new String(fileNameInBytes, "UTF-8");
-			documentFilePart.write(fileName);
+			documentFilePart.write(fileUploadsLocation + File.separator + fileName);
+			
+			// document.setDocumentName(fileName);
+			
+			int documentsRegistered = documentService.add(document);
+			
+			response.setStatus(200);
+			response.setHeader("Content-Type", "application/json");
+			response.getOutputStream().println(documentsRegistered);
 		} catch (NumberFormatException nfe) {
 			logger.info(MessageFormat.format("NumberFormatException: {0}", nfe.getMessage()));
 			nfe.printStackTrace();

@@ -7,20 +7,23 @@ public class Request {
 	private String name;
 	private String description;
 	private Date creationDate;
-	private String state;
+	private int requestStateId;
 	private String userId;
+	private int documentId;
 
 	public Request() {
 		
 	}
 
-	public Request(int id, String name, String description, Date creationDate, String state, String userId) {
+	public Request(int id, String name, String description, Date creationDate, int requestStateId, String userId,
+			int documentId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.creationDate = creationDate;
-		this.state = state;
+		this.requestStateId = requestStateId;
 		this.userId = userId;
+		this.documentId = documentId;
 	}
 
 	public int getId() {
@@ -55,12 +58,12 @@ public class Request {
 		this.creationDate = creationDate;
 	}
 
-	public String getState() {
-		return state;
+	public int getRequestStateId() {
+		return requestStateId;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setRequestStateId(int requestStateId) {
+		this.requestStateId = requestStateId;
 	}
 
 	public String getUserId() {
@@ -69,5 +72,13 @@ public class Request {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public int getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(int documentId) {
+		this.documentId = documentId;
 	}
 }
