@@ -93,34 +93,7 @@
 						id="search-document-name" placeholder="Buscar documentos">
 				</div>
 				<section class="documents-list container">
-					<div class="row g-2" id="documents-list-grid">
-						<!--
-		<div class="col-lg-6">
-							<div class="bg-white card shadow-sm">
-								<div class="card-body">
-									<div class="row align-items-center justify-content-center">
-										<div class="col-md-2">Icon</div>
-										<div class="col-md-7">
-											<h2 class="card-title h4">Título</h2>
-											<p class="card-text fw-light fst-italic">With supporting text</p>
-										</div>
-										<div class="col-md-3">
-											<div class="row align-items-center">
-												<div class="col flex-column">
-													<i class="bi bi-pencil-fill" style="font-size: 1.5rem;"></i>
-													<i class="bi bi-x" style="font-size: 1.5rem;"></i>
-												</div>
-												<div class="col">
-													<i class="bi bi-download" style="font-size: 2.5rem;"></i>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
--->
-					</div>
+					<div class="row g-2" id="documents-list-grid"></div>
 				</section>
 			</div>
 		</div>
@@ -142,7 +115,7 @@
 						<div class="mb-3">
 							<label for="document-name" class="form-label">Nombre</label> <input
 								type="text" class="form-control" id="document-name"
-								name="document-name">
+								name="document-name" required>
 						</div>
 						<div class="mb-3">
 							<label for="document-description" class="form-label">Descripción</label>
@@ -152,19 +125,60 @@
 						<div class="mb-3">
 							<label for="document-upload-date" class="form-label">Fecha
 								de subida</label> <input type="date" class="form-control"
-								name="document-date" id="document-upload-date" readonly>
+								name="document-date" id="document-upload-date" readonly required>
 						</div>
 						<div class="mb-3">
 							<input class="form-control" type="file" id="document-file"
 								name="document-file"
-								accept="application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+								accept="application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								required>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary"
+						id="register-document-accept-button">Registrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="edit-document-modal" data-backdrop="static"
+		data-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edición de
+						documento</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form enctype="multipart/form-data" id="edit-document-form-data">
+						<div class="mb-3">
+							<label for="document-name" class="form-label">Nombre</label> <input
+								type="text" class="form-control" id="edit-document-name"
+								name="document-name" required>
 						</div>
 						<div class="mb-3">
-							<label for="document-request-id">Solicitud</label> <select
-								class="form-control" name="request-id" id="document-request-id">
-								<option value="" disabled selected hidden>[Elige una
-									solicitud]</option>
-							</select>
+							<label for="document-description" class="form-label">Descripción</label>
+							<textarea class="form-control" id="edit-document-description"
+								rows="3" name="document-description"></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="document-upload-date" class="form-label">Fecha
+								de subida</label> <input type="date" class="form-control"
+								name="document-date" id="edit-document-upload-date" readonly
+								required>
+						</div>
+						<div class="mb-3">
+							<input class="form-control" type="file" id="edit-document-file"
+								name="document-file"
+								accept="application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+								required>
 						</div>
 					</form>
 				</div>

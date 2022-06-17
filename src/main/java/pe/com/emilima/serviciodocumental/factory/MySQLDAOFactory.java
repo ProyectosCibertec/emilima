@@ -1,11 +1,15 @@
 package pe.com.emilima.serviciodocumental.factory;
 
 import pe.com.emilima.serviciodocumental.dao.mysql.IDocumentDAO;
+import pe.com.emilima.serviciodocumental.dao.mysql.IFileDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.IRequestDAO;
+import pe.com.emilima.serviciodocumental.dao.mysql.IRequestStateDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.IRoleDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.IUserDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.imp.DocumentDAO;
+import pe.com.emilima.serviciodocumental.dao.mysql.imp.FileDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.imp.RequestDAO;
+import pe.com.emilima.serviciodocumental.dao.mysql.imp.RequestStateDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.imp.RoleDAO;
 import pe.com.emilima.serviciodocumental.dao.mysql.imp.UserDAO;
 
@@ -31,6 +35,18 @@ public class MySQLDAOFactory extends DAOFactory {
 	public IDocumentDAO documentDAO() {
 		// TODO Auto-generated method stub
 		return new DocumentDAO();
+	}
+
+	@Override
+	public IRequestStateDAO requestStateDAO() {
+		// TODO Auto-generated method stub
+		return new RequestStateDAO();
+	}
+
+	@Override
+	public IFileDAO fileDAO() {
+		// TODO Auto-generated method stub
+		return new FileDAO();
 	}
 	
 }

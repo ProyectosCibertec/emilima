@@ -17,9 +17,6 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/styles.css">
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/Document.js"
-	type="text/javascript"></script>
 <script>
 	let contextPath = "${pageContext.request.contextPath}"
 </script>
@@ -82,52 +79,35 @@
 			</div>
 			<div class="col-md-9 py-5 main-content h-100">
 				<div class="d-flex justify-content-between align-items-center">
-					<h1>Documentos</h1>
+					<h1>Solicitudes</h1>
 					<button type="button" class="btn btn-primary"
-						data-bs-toggle="modal" data-bs-target="#register-document-modal">Subir
-						documento</button>
+						data-bs-toggle="modal" data-bs-target="#register-request-modal">Registrar
+						solicitud</button>
 				</div>
 
 				<form class="my-4">
 					<div>
 						<input type="text" class="form-control w-100"
-							id="search-document-name" placeholder="Buscar documentos">
+							id="search-request-name" placeholder="Buscar solicitudes">
 					</div>
 				</form>
-				<section class="documents-list container">
-					<div class="row g-2" id="documents-list-grid">
-						<!--
-		<div class="col-lg-6">
-							<div class="bg-white card shadow-sm">
-								<div class="card-body">
-									<div class="row align-items-center justify-content-center">
-										<div class="col-md-2">Icon</div>
-										<div class="col-md-7">
-											<h2 class="card-title h4">Título</h2>
-											<p class="card-text fw-light fst-italic">With supporting text</p>
-										</div>
-										<div class="col-md-3">
-											<div class="row align-items-center">
-												<div class="col flex-column">
-													<i class="bi bi-pencil-fill" style="font-size: 1.5rem;"></i>
-													<i class="bi bi-x" style="font-size: 1.5rem;"></i>
-												</div>
-												<div class="col">
-													<i class="bi bi-download" style="font-size: 2.5rem;"></i>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
--->
-					</div>
-				</section>
+				<table class="table table-striped requests-table">
+					<thead>
+						<tr>
+							<th scope="col">Nombre</th>
+							<th scope="col">Descripción</th>
+							<th scope="col">Fecha de creación</th>
+							<th scope="col">Estado</th>
+							<th scope="col">Operaciones</th>
+						</tr>
+					</thead>
+					<tbody id="requests-list-table-body" class="requests-table__body">
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="register-document-modal"
+	<div class="modal fade" id="register-request-modal"
 		data-backdrop="static" data-keyboard="false" tabindex="-1"
 		aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div
@@ -135,37 +115,86 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Registro de
-						documento</h5>
+						solicitud</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form enctype="multipart/form-data" id="document-form-data">
+					<form id="register-request-form-data">
 						<div class="mb-3">
-							<label for="document-name" class="form-label">Nombre</label> <input
-								type="text" class="form-control" id="document-name"
-								name="document-name">
+							<label for="request-name" class="form-label">Nombre</label> <input
+								type="text" class="form-control" id="request-name"
+								name="request-name" required>
 						</div>
 						<div class="mb-3">
-							<label for="document-description" class="form-label">Descripción</label>
-							<textarea class="form-control" id="document-description" rows="3"
-								name="document-description"></textarea>
+							<label for="request-description" class="form-label">Descripción</label>
+							<textarea class="form-control" id="request-description" rows="3"
+								name="request-description" required></textarea>
 						</div>
 						<div class="mb-3">
-							<label for="document-upload-date" class="form-label">Fecha
-								de subida</label> <input type="date" class="form-control"
-								name="document-date" id="document-upload-date" readonly>
+							<label for="request-creation-date" class="form-label">Fecha
+								de creación</label> <input type="date" class="form-control"
+								name="request-creation-date" id="request-creation-date" readonly>
 						</div>
 						<div class="mb-3">
-							<input class="form-control" type="file" id="document-file"
-								name="document-file"
-								accept="application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+							<label for="request-user">Usuario que registra la
+								solicitud</label> <input type="text" class="form-control"
+								name="request-user" id="request-user" readonly
+								value="${ sessionScope.loginedUser.username }" required>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary"
+						id="register-request-accept-button">Registrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="edit-request-modal" data-backdrop="static"
+		data-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Editar
+						solicitud</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form id="edit-request-form-data">
+						<div class="mb-3">
+							<label for="edit-request-name" class="form-label">Nombre</label> <input
+								type="text" class="form-control" id="edit-request-name"
+								name="request-name" required>
 						</div>
 						<div class="mb-3">
-							<label for="document-request-id">Solicitud</label> <select
-								class="form-control" name="request-id" id="document-request-id">
-								<option value="" disabled selected hidden>[Elige una
-									solicitud]</option>
+							<label for="edit-request-description" class="form-label">Descripción</label>
+							<textarea class="form-control" id="edit-request-description"
+								rows="3" name="request-description" required></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="edit-request-creation-date" class="form-label">Fecha
+								de creación</label> <input type="date" class="form-control"
+								name="request-creation-date" id="edit-request-creation-date"
+								readonly>
+						</div>
+						<div class="mb-3">
+							<label for="edit-request-user">Usuario que registra la
+								solicitud</label> <input type="text" class="form-control"
+								name="request-user" id="edit-request-user" readonly
+								 required>
+						</div>
+						<div class="mb-3">
+							<label for="edit-request-document">Documento</label> <select
+								class="form-control" name="request-document"
+								id="edit-request-document" required>
+								<option value="" disabled selected hidden>[Elige un
+									documento]</option>
 							</select>
 						</div>
 					</form>
@@ -174,7 +203,7 @@
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">Cancelar</button>
 					<button type="button" class="btn btn-primary"
-						id="register-document-accept-button">Aceptar</button>
+						id="edit-request-accept-button">Editar</button>
 				</div>
 			</div>
 		</div>

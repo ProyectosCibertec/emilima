@@ -41,4 +41,22 @@ public class RequestService implements IRequestDAO {
 		return requestDao.delete(id);
 	}
 
+	@Override
+	public int validate(int id) {
+		// TODO Auto-generated method stub
+		return requestDao.validate(id);
+	}
+
+	@Override
+	public int approve(int id) {
+		// TODO Auto-generated method stub
+		return requestDao.approve(id);
+	}
+
+	@Override
+	public int authorize(int id) {
+		// TODO Auto-generated method stub
+		return requestDao.authorize(id);
+	}
+
 }

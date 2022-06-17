@@ -40,24 +40,14 @@ ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 
 
 -- -----------------------------------------------------
--- Table `emilima`.`request`
+-- Table `emilima`.`file`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `emilima`.`request` ;
+DROP TABLE IF EXISTS `emilima`.`file` ;
 
-CREATE TABLE IF NOT EXISTS `emilima`.`request` (
+CREATE TABLE IF NOT EXISTS `emilima`.`file` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `description` TEXT NULL,
-  `creation_date` DATETIME NULL,
-  `state` CHAR(1) NULL,
-  `user_id` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`),
-  INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `emilima`.`user` (`username`)
-    ON DELETE set null
-    ON UPDATE set null)
+  `filename` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 
 
@@ -71,21 +61,79 @@ CREATE TABLE IF NOT EXISTS `emilima`.`document` (
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT NULL,
   `upload_date` DATETIME NULL,
-  `document_name` TEXT NULL,
-  `request_id` INT NULL,
+  `file_id` INT,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
-  INDEX `request_id_idx` (`request_id` ASC) VISIBLE,
-  CONSTRAINT `request_id`
-    FOREIGN KEY (`request_id`)
-    REFERENCES `emilima`.`request` (`id`)
+  INDEX `fk_document_file_idx` (`file_id` ASC) VISIBLE,
+  CONSTRAINT `fk_document_file`
+    FOREIGN KEY (`file_id`)
+    REFERENCES `emilima`.`file` (`id`)
     ON DELETE set null
     ON UPDATE set null)
 ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 
-INSERT INTO `document`(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdf", "asdf", "2022-03-03", NULL);
-INSERT INTO `document`(`name`, `description`, `upload_date`, `request_id`) VALUES ("asdfa", "asdf", "2022-03-03", NULL);
-INSERT INTO `document`(`name`, `description`, `upload_date`, `request_id`) VALUES ("ghg", "asdf", "2022-03-03", NULL);
+
+-- -----------------------------------------------------
+-- Table `emilima`.`request_state`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `emilima`.`request_state` ;
+
+CREATE TABLE IF NOT EXISTS `emilima`.`request_state` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
+ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
+
+
+-- -----------------------------------------------------
+-- Table `emilima`.`request`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `emilima`.`request` ;
+
+CREATE TABLE IF NOT EXISTS `emilima`.`request` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `description` TEXT NULL,
+  `creation_date` DATETIME NULL,
+  `state_id` INT,
+  `user_id` VARCHAR(45),
+  `document_id` INT,
+  PRIMARY KEY (`id`),
+  INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_request_document1_idx` (`document_id` ASC) VISIBLE,
+  INDEX `fk_request_request_state_idx` (`state_id` ASC) VISIBLE,
+  CONSTRAINT `fk_request_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `emilima`.`user` (`username`)
+    ON DELETE set null
+    ON UPDATE set null,
+  CONSTRAINT `fk_request_document`
+    FOREIGN KEY (`document_id`)
+    REFERENCES `emilima`.`document` (`id`)
+    ON DELETE set null
+    ON UPDATE set null,
+  CONSTRAINT `fk_request_request_state`
+    FOREIGN KEY (`state_id`)
+    REFERENCES `emilima`.`request_state` (`id`)
+    ON DELETE set null
+    ON UPDATE set null)
+ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
+
+
+INSERT INTO `request_state`(`name`) VALUES ("PENDIENTE");
+INSERT INTO `request_state`(`name`) VALUES ("VALIDADA");
+INSERT INTO `request_state`(`name`) VALUES ("AUTORIZADA");
+INSERT INTO `request_state`(`name`) VALUES ("ATENDIDA");
+
+INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
+INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
+INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
+INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
+
+INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("asdf", "asdf", "2022-03-03", 1);
+INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("asdfa", "asdf", "2022-03-03", 2);
+INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("ghg", "asdf", "2022-03-03", 3);
 
 INSERT INTO `role`(`name`, `description`) VALUES ("Administrador", "Usuario con permisos globales.");
 INSERT INTO `role`(`name`, `description`) VALUES ("Unidad orgánica", "Usuario con capacidad de registrar solicitudes de documentación.");
@@ -96,6 +144,12 @@ INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("admin", 
 INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("admin1", "admin", "admin@emilima.com.pe", 1);
 INSERT INTO `user`(`username`, `password`, `email`, `role_id`) VALUES ("user", "admin", "admin@emilima.com.pe", 2);
 
+INSERT INTO `request`(`name`, `description`, `creation_date`, `state_id`, `user_id`, `document_id`) VALUES ("Solicitud de documentación", "Solicitud de documentación", "2022-03-03", 1, "admin", 1);
+INSERT INTO `request`(`name`, `description`, `creation_date`, `state_id`, `user_id`, `document_id`) VALUES ("Solicitud de documentación 1", "Solicitud de documentación", "2022-03-03", 2, "admin", 1);
+INSERT INTO `request`(`name`, `description`, `creation_date`, `state_id`, `user_id`, `document_id`) VALUES ("Solicitud de documentación 2", "Solicitud de documentación", "2022-03-03", 3, "admin", 1);
+
 SELECT * FROM `document`;
 SELECT * FROM `role`;
 SELECT * FROM `user`;
+SELECT * FROM `request`;
+SELECT * FROM `request_state`;

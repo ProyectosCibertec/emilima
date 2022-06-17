@@ -109,7 +109,8 @@ public class UserDAO implements IUserDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement("INSERT INTO user(`username`, `password`, `email`, `role_id`) VALUES (?, ?, ?, ?)");
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO user(`username`, `password`, `email`, `role_id`) VALUES (?, ?, ?, ?)");
 
 			preparedStatement.setString(1, user.getUsername());
 			preparedStatement.setString(2, user.getPassword());
@@ -149,8 +150,8 @@ public class UserDAO implements IUserDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE user SET password = ?, email = ?, role_id = ? WHERE username = ?");
+			preparedStatement = connection
+					.prepareStatement("UPDATE user SET password = ?, email = ?, role_id = ? WHERE username = ?");
 
 			preparedStatement.setString(1, user.getPassword());
 			preparedStatement.setString(2, user.getEmail());
@@ -217,21 +218,21 @@ public class UserDAO implements IUserDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public User login(String username, String password) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		User user = null;
-		
+
 		try {
 			connection = new MySQLConnection().getConnection();
 			preparedStatement = connection.prepareStatement("SELECT password FROM user WHERE username = ?");
 			preparedStatement.setString(1, username);
-			
+
 			resultSet = preparedStatement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				if (resultSet.getString(1).equals(password)) {
 					user = get(username);
@@ -253,8 +254,8 @@ public class UserDAO implements IUserDAO {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return user;
 	}
-	
+
 }

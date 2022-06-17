@@ -7,20 +7,18 @@ public class Document {
 	private String name;
 	private String description;
 	private Date uploadDate;
-	private String documentName;
-	private int requestId;
+	private int fileId;
 
 	public Document() {
 
 	}
 
-	public Document(int id, String name, String description, Date uploadDate, String documentName, int requestId) {
+	public Document(int id, String name, String description, Date uploadDate, int fileId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.uploadDate = uploadDate;
-		this.documentName = documentName;
-		this.requestId = requestId;
+		this.fileId = fileId;
 	}
 
 	public int getId() {
@@ -55,19 +53,11 @@ public class Document {
 		this.uploadDate = uploadDate;
 	}
 
-	public String getDocumentName() {
-		return documentName;
+	public int getFileId() {
+		return fileId;
 	}
 
-	public void setDocumentName(String documentName) {
-		this.documentName = documentName;
-	}
-
-	public int getRequestId() {
-		return requestId;
-	}
-
-	public void setRequestId(int requestId) {
-		this.requestId = requestId;
+	public void setFileId(int fileId) {
+		this.fileId = fileId;
 	}
 }
