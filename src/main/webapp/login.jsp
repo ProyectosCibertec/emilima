@@ -44,12 +44,12 @@
 							<form action="${pageContext.request.contextPath}/login" method="POST">
 								<div class="mb-3">
 									<label for="username" class="form-label">Usuario: </label> <input
-										class="form-control" id="username" name="username" type="text" />
+										class="form-control" id="username" name="username" type="text" required/>
 								</div>
 								<div class="mb-3">
 									<label for="password" class="form-label">Contraseña: </label> <input
 										class="form-control" id="password" name="password"
-										type="password" />
+										type="password" required/>
 								</div>
 								<div class="row mb-3">
 									<div class="col-xl-5">

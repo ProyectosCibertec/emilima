@@ -84,7 +84,7 @@
 				<div class="d-flex justify-content-between align-items-center">
 					<h1>Documentos</h1>
 					<button type="button" class="btn btn-primary"
-						data-bs-toggle="modal" data-bs-target="#register-document-modal">Subir
+						data-bs-toggle="modal" data-bs-target="#register-document-modal" onclick="openRegisterDocumentModal()">Subir
 						documento</button>
 				</div>
 
@@ -174,11 +174,8 @@
 								name="document-date" id="edit-document-upload-date" readonly
 								required>
 						</div>
-						<div class="mb-3">
-							<input class="form-control" type="file" id="edit-document-file"
-								name="document-file"
-								accept="application/pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-								required>
+						<div class="mb-3" id="edit-document-file">
+							
 						</div>
 					</form>
 				</div>
@@ -186,7 +183,7 @@
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">Cancelar</button>
 					<button type="button" class="btn btn-primary"
-						id="register-document-accept-button">Aceptar</button>
+						id="edit-document-accept-button">Editar</button>
 				</div>
 			</div>
 		</div>
