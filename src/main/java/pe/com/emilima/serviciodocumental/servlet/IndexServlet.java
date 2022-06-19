@@ -28,7 +28,6 @@ public class IndexServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "--- GET: IndexServlet ---");
-
 		showIndex(request, response);
 	}
 

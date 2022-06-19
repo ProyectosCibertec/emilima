@@ -46,7 +46,7 @@ function documents() {
 			registerDocumentForm.reportValidity();
 		}
 	});
-	
+
 	$("#edit-document-accept-button").click(function() {
 		let editDocumentForm = $("#edit-document-form-data").get()[0];
 
@@ -127,17 +127,17 @@ async function registerDocumentInView() {
 	let result = await registerDocument(formData);
 
 	if (result == 1) {
-		showSuccessAlert($("#register-document-modal .modal-body"), "Documento creado correctamente");
+		showSuccessAlert("Documento creado correctamente");
 		$("#document-form-data").trigger("reset");
 		getDocumentsInView()
 	} else {
-		showDangerAlert($("#register-document-modal .modal-body"), "Hubo un error al crear el Documento");
+		showDangerAlert("Hubo un error al crear el Documento");
 	}
 }
 
 async function editDocumentInView() {
 	let formData = new FormData();
-	
+
 	formData.append("id", $("#edit-document-accept-button").attr("document-id"));
 	formData.append("name", $("#edit-document-name").val());
 	formData.append("description", $("#edit-document-description").val());
@@ -146,11 +146,11 @@ async function editDocumentInView() {
 	let result = await editDocument(formData);
 
 	if (result == 1) {
-		showSuccessAlert($("#edit-document-modal .modal-body"), "Documento editado correctamente");
+		showSuccessAlert("Documento editado correctamente");
 		$("#edit-document-form-data").trigger("reset");
 		getDocumentsInView()
 	} else {
-		showDangerAlert($("#edit-document-modal .modal-body"), "Hubo un error al editar el Documento");
+		showDangerAlert("Hubo un error al editar el Documento");
 	}
 }
 
@@ -205,11 +205,11 @@ async function registerRequestInView() {
 	let result = await registerRequest(request);
 
 	if (result == 1) {
-		showSuccessAlert($("#register-request-modal .modal-body"), "Solicitud creada correctamente");
+		showSuccessAlert("Solicitud creada correctamente");
 		$("#register-request-form-data").trigger("reset");
 		getRequestsInView();
 	} else {
-		showDangerAlert($("#register-request-modal .modal-body"), "Hubo un error al crear la solicitud");
+		showDangerAlert("Hubo un error al crear la solicitud");
 	}
 }
 
@@ -226,11 +226,11 @@ async function editRequestInView() {
 	let result = await editRequest(request);
 
 	if (result == 1) {
-		showSuccessAlert($("#edit-request-modal .modal-body"), "Solicitud editada correctamente");
+		showSuccessAlert("Solicitud editada correctamente");
 		$("#edit-request-form-data").trigger("reset");
 		getRequestsInView();
 	} else {
-		showDangerAlert($("#edit-request-modal .modal-body"), "Hubo un error al editar la solicitud");
+		showDangerAlert("Hubo un error al editar la solicitud");
 	}
 }
 
@@ -245,11 +245,11 @@ async function registerUserInView() {
 	let result = await registerUser(user);
 
 	if (result == 1) {
-		showSuccessAlert($("#register-user-modal .modal-body"), "Usuario creado correctamente");
+		showSuccessAlert("Usuario creado correctamente");
 		$("#register-user-form-data").trigger("reset");
 		getUsersInView();
 	} else {
-		showDangerAlert($("#register-user-modal .modal-body"), "Hubo un error al crear el usuario");
+		showDangerAlert("Hubo un error al crear el usuario");
 	}
 }
 
@@ -264,10 +264,10 @@ async function editUserInView() {
 	let result = await editUser(user);
 
 	if (result == 1) {
-		showSuccessAlert($("#edit-user-modal .modal-body"), "Usuario editado correctamente");
+		showSuccessAlert("Usuario editado correctamente");
 		getUsersInView();
 	} else {
-		showDangerAlert($("#edit-user-modal .modal-body"), "Hubo un error al editar el usuario");
+		showDangerAlert("Hubo un error al editar el usuario");
 	}
 }
 
@@ -401,31 +401,31 @@ function showDocumentsInView(documents) {
 	});
 }
 
-function showDangerAlert(element, message) {
+function showDangerAlert(message) {
 	const container = document.createElement("div");
 	let alert = `
-	<div class="alert alert-danger" role="alert">
+	<div class="alert alert-danger appears-in-top-center text-center shadow-sm" role="alert">
 	 ${message}
 	</div>
 	`
 	container.innerHTML = alert;
-	element.prepend(container);
+	$('body').prepend(container);
 
 	setTimeout(function() {
 		container.remove();
 	}, 3000);
 }
 
-function showSuccessAlert(element, message) {
+function showSuccessAlert(message) {
 	const container = document.createElement("div");
 	let alert = `
-	<div class="alert alert-success" role="alert">
+	<div class="alert alert-success appears-in-top-center text-center shadow-sm" role="alert">
 	 ${message}
 	</div>
 	`
 	container.innerHTML = alert;
-	element.prepend(container);
-
+	$('body').prepend(container);
+	
 	setTimeout(function() {
 		container.remove();
 	}, 3000);
@@ -464,11 +464,11 @@ async function deleteDocumentOperation(id) {
 	let documentsDeleted = await deleteDocument(id);
 
 	if (documentsDeleted == 1) {
-		showSuccessAlert($(".main-content"), "Documento eliminado correctamente");
+		showSuccessAlert("Documento eliminado correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al eliminar el documento")
+		showDangerAlert("Hubo un error al eliminar el documento")
 	}
-	
+
 	getDocumentsInView();
 }
 
@@ -476,9 +476,9 @@ async function deleteUserOperation(username) {
 	let usersDeleted = await deleteUser(username);
 
 	if (usersDeleted == 1) {
-		showSuccessAlert($(".main-content"), "Usuario eliminado correctamente");
+		showSuccessAlert("Usuario eliminado correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al eliminar el usuario")
+		showDangerAlert("Hubo un error al eliminar el usuario")
 	}
 
 	getUsersInView();
@@ -488,9 +488,9 @@ async function authorizeRequestOperation(id) {
 	let requestUpdated = await authorizeRequest(id);
 
 	if (requestUpdated == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud actualizada correctamente");
+		showSuccessAlert("Solicitud actualizada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al actualizar la solicitud")
+		showDangerAlert("Hubo un error al actualizar la solicitud")
 	}
 
 	getRequestsInView();
@@ -500,9 +500,9 @@ async function approveRequestOperation(id) {
 	let requestUpdated = await approveRequest(id);
 
 	if (requestUpdated == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud actualizada correctamente");
+		showSuccessAlert("Solicitud actualizada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al actualizar la solicitud")
+		showDangerAlert("Hubo un error al actualizar la solicitud")
 	}
 
 	getRequestsInView();
@@ -523,9 +523,9 @@ async function validateRequestOperation(id) {
 	let requestUpdated = await validateRequest(id);
 
 	if (requestUpdated == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud actualizada correctamente");
+		showSuccessAlert("Solicitud actualizada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al actualizar la solicitud")
+		showDangerAlert("Hubo un error al actualizar la solicitud")
 	}
 
 	getRequestsInView();
@@ -535,9 +535,9 @@ async function deleteRequestOperation(id) {
 	let requestsDeleted = await deleteRequest(id);
 
 	if (requestsDeleted == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud eliminada correctamente");
+		showSuccessAlert("Solicitud eliminada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al eliminar la solicitud")
+		showDangerAlert("Hubo un error al eliminar la solicitud")
 	}
 
 	getRequestsInView();
@@ -554,13 +554,13 @@ async function editUserOperation(username) {
 
 async function openRegisterRequestModal() {
 	let currentDate = dateFormat(new Date(), "yyyy-MM-dd");
-	
+
 	$("#request-creation-date").val(currentDate);
 }
 
 async function openRegisterDocumentModal() {
 	let currentDate = dateFormat(new Date(), "yyyy-MM-dd");
-	
+
 	$("#document-upload-date").val(currentDate);
 }
 
@@ -590,7 +590,12 @@ function getDocuments() {
 
 function deleteDocument(id) {
 	let result = $.ajax({
-		url: `${contextPath}/documentos/${id}`, method: "DELETE"
+		url: `${contextPath}/documentos/${id}`, method: "DELETE",
+		statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -659,7 +664,11 @@ function getDocument(id) {
 
 function registerDocument(formData) {
 	let result = $.ajax({
-		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false, xhrFields: { responseType: 'json' }
+		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false, xhrFields: { responseType: 'json' }, statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -667,7 +676,11 @@ function registerDocument(formData) {
 
 function editDocument(formData) {
 	let result = $.ajax({
-		url: `${contextPath}/documentos/`, method: "PUT", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false, xhrFields: { responseType: 'json' }
+		url: `${contextPath}/documentos/`, method: "PUT", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false, xhrFields: { responseType: 'json' }, statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -727,7 +740,11 @@ function getRequestStates() {
 
 function validateRequest(id) {
 	let result = $.ajax({
-		url: `${contextPath}/solicitudes/validar/?id=${id}`, method: "PUT"
+		url: `${contextPath}/solicitudes/validar/?id=${id}`, method: "PUT", statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -735,7 +752,11 @@ function validateRequest(id) {
 
 function approveRequest(id) {
 	let result = $.ajax({
-		url: `${contextPath}/solicitudes/aprobar/?id=${id}`, method: "PUT"
+		url: `${contextPath}/solicitudes/aprobar/?id=${id}`, method: "PUT", statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -743,7 +764,11 @@ function approveRequest(id) {
 
 function authorizeRequest(id) {
 	let result = $.ajax({
-		url: `${contextPath}/solicitudes/autorizar/?id=${id}`, method: "PUT"
+		url: `${contextPath}/solicitudes/autorizar/?id=${id}`, method: "PUT", statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
