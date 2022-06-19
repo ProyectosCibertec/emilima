@@ -81,7 +81,7 @@
 				<div class="d-flex justify-content-between align-items-center">
 					<h1>Solicitudes</h1>
 					<button type="button" class="btn btn-primary"
-						data-bs-toggle="modal" data-bs-target="#register-request-modal">Registrar
+						data-bs-toggle="modal" data-bs-target="#register-request-modal" onclick="openRegisterRequestModal()">Registrar
 						solicitud</button>
 				</div>
 

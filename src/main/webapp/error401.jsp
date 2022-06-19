@@ -40,10 +40,10 @@
 				<hr>
 				<ul class="nav nav-pills flex-column mb-auto">
 					<li class="nav-item"><a
-						href="${pageContext.request.contextPath}/"
-						class="nav-link text-dark" aria-current="page"> <svg
-								class="bi me-2" width="16" height="16">
-						<use xlink:href="#index" /></svg> Inicio
+						href="${pageContext.request.contextPath}/" class="nav-link text-dark"
+						aria-current="page"> <svg class="bi me-2" width="16"
+								height="16">
+						<use xlink:href="#home" /></svg> Inicio
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/documentos/listar"
@@ -81,8 +81,8 @@
 				</div>
 			</div>
 			<div class="col-md-9 py-5 main-content d-flex flex-column align-items-center justify-content-center">
-				<h1 class="text-center">ERROR 404 NOT FOUND</h1>
-				<p>No se encontró el recurso</p>
+				<h1 class="text-center">ERROR 401 UNAUTHORIZED</h1>
+				<p>No estás autorizado para acceder</p>
 			</div>
 		</div>
 	</div>

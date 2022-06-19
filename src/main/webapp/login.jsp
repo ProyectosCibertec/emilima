@@ -13,7 +13,16 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 <link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/styles.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/Document.js"
+	type="text/javascript"></script>
+<script>
+	let contextPath = "${pageContext.request.contextPath}"
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/scripts.js"
 	type="text/javascript"></script>
 </head>
@@ -44,12 +53,12 @@
 							<form action="${pageContext.request.contextPath}/login" method="POST">
 								<div class="mb-3">
 									<label for="username" class="form-label">Usuario: </label> <input
-										class="form-control" id="username" name="username" type="text" />
+										class="form-control" id="username" name="username" type="text" required/>
 								</div>
 								<div class="mb-3">
 									<label for="password" class="form-label">Contraseña: </label> <input
 										class="form-control" id="password" name="password"
-										type="password" />
+										type="password" required/>
 								</div>
 								<div class="row mb-3">
 									<div class="col-xl-5">

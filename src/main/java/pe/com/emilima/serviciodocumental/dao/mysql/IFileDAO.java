@@ -7,7 +7,7 @@ import pe.com.emilima.serviciodocumental.dto.File;
 public interface IFileDAO {
 	List<File> list();
 
-	File get(int id);
+	File get(String id);
 	
 	int add(File file);
 }

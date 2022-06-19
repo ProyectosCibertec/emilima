@@ -18,7 +18,7 @@ public class FileService implements IFileDAO {
 	}
 
 	@Override
-	public File get(int id) {
+	public File get(String id) {
 		// TODO Auto-generated method stub
 		return fileDAO.get(id);
 	}

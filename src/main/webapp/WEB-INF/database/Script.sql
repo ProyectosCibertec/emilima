@@ -45,7 +45,7 @@ ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 DROP TABLE IF EXISTS `emilima`.`file` ;
 
 CREATE TABLE IF NOT EXISTS `emilima`.`file` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` VARCHAR(48),
   `filename` TEXT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `emilima`.`document` (
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT NULL,
   `upload_date` DATETIME NULL,
-  `file_id` INT,
+  `file_id` VARCHAR(48) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
   INDEX `fk_document_file_idx` (`file_id` ASC) VISIBLE,
@@ -126,14 +126,14 @@ INSERT INTO `request_state`(`name`) VALUES ("VALIDADA");
 INSERT INTO `request_state`(`name`) VALUES ("AUTORIZADA");
 INSERT INTO `request_state`(`name`) VALUES ("ATENDIDA");
 
-INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
-INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
-INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
-INSERT INTO `file`(`filename`) VALUES ("ejemplo.pdf");
+INSERT INTO `file`(`id`, `filename`) VALUES ("dca3a58c-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
+INSERT INTO `file`(`id`, `filename`) VALUES ("e2d96144-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
+INSERT INTO `file`(`id`, `filename`) VALUES ("eb535816-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
+INSERT INTO `file`(`id`, `filename`) VALUES ("f0783f8c-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
 
-INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("asdf", "asdf", "2022-03-03", 1);
-INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("asdfa", "asdf", "2022-03-03", 2);
-INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("ghg", "asdf", "2022-03-03", 3);
+INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("Documento 1", "Este documento contiene información de un inmueble", "2022-03-03", "dca3a58c-ef10-11ec-8ea0-0242ac120002");
+INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("Documento 2", "Este documento contiene información de un inmueble", "2022-03-03", "e2d96144-ef10-11ec-8ea0-0242ac120002");
+INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("Documento 3", "Este documento contiene información de un inmueble", "2022-03-03", "eb535816-ef10-11ec-8ea0-0242ac120002");
 
 INSERT INTO `role`(`name`, `description`) VALUES ("Administrador", "Usuario con permisos globales.");
 INSERT INTO `role`(`name`, `description`) VALUES ("Unidad orgánica", "Usuario con capacidad de registrar solicitudes de documentación.");
@@ -153,3 +153,4 @@ SELECT * FROM `role`;
 SELECT * FROM `user`;
 SELECT * FROM `request`;
 SELECT * FROM `request_state`;
+SELECT * FROM `file`;

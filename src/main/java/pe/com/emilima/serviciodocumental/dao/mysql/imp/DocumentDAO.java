@@ -33,7 +33,7 @@ public class DocumentDAO implements IDocumentDAO {
 
 			while (resultSet.next()) {
 				document = new Document(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-						resultSet.getDate(4), resultSet.getInt(5));
+						resultSet.getDate(4), resultSet.getString(5));
 				documents.add(document);
 			}
 		} catch (SQLException se) {
@@ -75,7 +75,7 @@ public class DocumentDAO implements IDocumentDAO {
 
 			while (resultSet.next()) {
 				document = new Document(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-						resultSet.getDate(4), resultSet.getInt(5));
+						resultSet.getDate(4), resultSet.getString(5));
 			}
 		} catch (SQLException se) {
 			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
@@ -114,7 +114,7 @@ public class DocumentDAO implements IDocumentDAO {
 			preparedStatement.setString(1, document.getName());
 			preparedStatement.setString(2, document.getDescription());
 			preparedStatement.setDate(3, new java.sql.Date(document.getUploadDate().getTime()));
-			preparedStatement.setInt(4, document.getFileId());
+			preparedStatement.setString(4, document.getFileId());
 
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException se) {
@@ -150,13 +150,12 @@ public class DocumentDAO implements IDocumentDAO {
 		try {
 			connection = new MySQLConnection().getConnection();
 			preparedStatement = connection.prepareStatement(
-					"UPDATE document SET name = ?, description = ?, upload_date = ?, file_id = ? WHERE id = ?");
+					"UPDATE document SET name = ?, description = ?, upload_date = ? WHERE id = ?");
 
 			preparedStatement.setString(1, document.getName());
 			preparedStatement.setString(2, document.getDescription());
-			preparedStatement.setDate(3, java.sql.Date.valueOf(document.getUploadDate().toString()));
-			preparedStatement.setInt(4, document.getFileId());
-			preparedStatement.setInt(6, document.getId());
+			preparedStatement.setDate(3, new java.sql.Date(document.getUploadDate().getTime()));
+			preparedStatement.setInt(4, document.getId());
 
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException se) {

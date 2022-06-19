@@ -22,7 +22,7 @@ public class FileDAO implements IFileDAO {
 	}
 
 	@Override
-	public File get(int id) {
+	public File get(String id) {
 		// TODO Auto-generated method stub
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -32,12 +32,12 @@ public class FileDAO implements IFileDAO {
 		try {
 			connection = new MySQLConnection().getConnection();
 			preparedStatement = connection.prepareStatement("SELECT * FROM file WHERE `id` = ?");
-			preparedStatement.setInt(1, id);
+			preparedStatement.setString(1, id);
 			resultSet = preparedStatement.executeQuery();
 			file = new File();
 
 			while (resultSet.next()) {
-				file = new File(resultSet.getInt(1), resultSet.getString(2));
+				file = new File(resultSet.getString(1), resultSet.getString(2));
 			}
 		} catch (SQLException se) {
 			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
@@ -71,9 +71,10 @@ public class FileDAO implements IFileDAO {
 
 		try {
 			connection = new MySQLConnection().getConnection();
-			preparedStatement = connection.prepareStatement("INSERT INTO file(`name`) VALUES (?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO file(`id`, `filename`) VALUES (?, ?)");
 
-			preparedStatement.setString(1, file.getFilename());
+			preparedStatement.setString(1, file.getId());
+			preparedStatement.setString(2, file.getFilename());
 
 			result = preparedStatement.executeUpdate();
 		} catch (SQLException se) {

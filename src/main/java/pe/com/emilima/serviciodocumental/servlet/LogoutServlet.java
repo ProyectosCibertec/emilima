@@ -4,17 +4,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import pe.com.emilima.serviciodocumental.dto.User;
-import pe.com.emilima.serviciodocumental.service.mysql.UserService;
-import pe.com.emilima.serviciodocumental.util.security.SecurityUtils;
 
 @WebServlet(description = "Servlet used for end authentication", urlPatterns = { "/logout" })
 public class LogoutServlet extends HttpServlet {

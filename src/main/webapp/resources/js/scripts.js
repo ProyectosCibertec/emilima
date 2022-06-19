@@ -31,11 +31,7 @@ function app() {
  */
 
 function documents() {
-	let currentDate = dateFormat(new Date(), "yyyy-MM-dd");
-
 	getDocumentsInView();
-
-	$("#document-upload-date").val(currentDate);
 
 	$("#search-document-name").keyup(function() {
 		searchDocumentsInView();
@@ -50,15 +46,21 @@ function documents() {
 			registerDocumentForm.reportValidity();
 		}
 	});
+
+	$("#edit-document-accept-button").click(function() {
+		let editDocumentForm = $("#edit-document-form-data").get()[0];
+
+		if (editDocumentForm.checkValidity()) {
+			editDocumentInView();
+		} else {
+			editDocumentForm.reportValidity();
+		}
+	});
 }
 
 function requests() {
-	let currentDate = dateFormat(new Date(), "yyyy-MM-dd");
-
 	getRequestsInView();
 	getDocumentsInRequestDropdownList();
-
-	$("#request-creation-date").val(currentDate);
 
 	$("#register-request-accept-button").click(function() {
 		let registerRequestForm = $("#register-request-form-data").get()[0];
@@ -125,11 +127,30 @@ async function registerDocumentInView() {
 	let result = await registerDocument(formData);
 
 	if (result == 1) {
-		showSuccessAlert($("#register-document-modal .modal-body"), "Documento creado correctamente");
+		showSuccessAlert("Documento creado correctamente");
 		$("#document-form-data").trigger("reset");
 		getDocumentsInView()
 	} else {
-		showDangerAlert($("#register-document-modal .modal-body"), "Hubo un error al crear el Documento");
+		showDangerAlert("Hubo un error al crear el Documento");
+	}
+}
+
+async function editDocumentInView() {
+	let formData = new FormData();
+
+	formData.append("id", $("#edit-document-accept-button").attr("document-id"));
+	formData.append("name", $("#edit-document-name").val());
+	formData.append("description", $("#edit-document-description").val());
+	formData.append("uploadDate", $("#edit-document-upload-date").val());
+
+	let result = await editDocument(formData);
+
+	if (result == 1) {
+		showSuccessAlert("Documento editado correctamente");
+		$("#edit-document-form-data").trigger("reset");
+		getDocumentsInView()
+	} else {
+		showDangerAlert("Hubo un error al editar el Documento");
 	}
 }
 
@@ -184,11 +205,11 @@ async function registerRequestInView() {
 	let result = await registerRequest(request);
 
 	if (result == 1) {
-		showSuccessAlert($("#register-request-modal .modal-body"), "Solicitud creada correctamente");
+		showSuccessAlert("Solicitud creada correctamente");
 		$("#register-request-form-data").trigger("reset");
 		getRequestsInView();
 	} else {
-		showDangerAlert($("#register-request-modal .modal-body"), "Hubo un error al crear la solicitud");
+		showDangerAlert("Hubo un error al crear la solicitud");
 	}
 }
 
@@ -205,11 +226,11 @@ async function editRequestInView() {
 	let result = await editRequest(request);
 
 	if (result == 1) {
-		showSuccessAlert($("#edit-request-modal .modal-body"), "Solicitud editada correctamente");
+		showSuccessAlert("Solicitud editada correctamente");
 		$("#edit-request-form-data").trigger("reset");
 		getRequestsInView();
 	} else {
-		showDangerAlert($("#edit-request-modal .modal-body"), "Hubo un error al editar la solicitud");
+		showDangerAlert("Hubo un error al editar la solicitud");
 	}
 }
 
@@ -224,11 +245,11 @@ async function registerUserInView() {
 	let result = await registerUser(user);
 
 	if (result == 1) {
-		showSuccessAlert($("#register-user-modal .modal-body"), "Usuario creado correctamente");
+		showSuccessAlert("Usuario creado correctamente");
 		$("#register-user-form-data").trigger("reset");
 		getUsersInView();
 	} else {
-		showDangerAlert($("#register-user-modal .modal-body"), "Hubo un error al crear el usuario");
+		showDangerAlert("Hubo un error al crear el usuario");
 	}
 }
 
@@ -243,10 +264,10 @@ async function editUserInView() {
 	let result = await editUser(user);
 
 	if (result == 1) {
-		showSuccessAlert($("#edit-user-modal .modal-body"), "Usuario editado correctamente");
+		showSuccessAlert("Usuario editado correctamente");
 		getUsersInView();
 	} else {
-		showDangerAlert($("#edit-user-modal .modal-body"), "Hubo un error al editar el usuario");
+		showDangerAlert("Hubo un error al editar el usuario");
 	}
 }
 
@@ -301,8 +322,8 @@ async function showUsersInView(users) {
 							<td>${user.email}</td>
 							<td>${usersRole}</td>
 							<td>
-								<button class="btn btn-primary users-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-user-modal" onclick="editUserOperation('${user.username}')">Actualizar</button>
-									<button class="btn btn-primary users-table__body__item__delete-button" onclick="deleteUserOperation('${user.username}')">Eliminar</button>
+								<button class="btn btn-warning users-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-user-modal" onclick="editUserOperation('${user.username}')">Actualizar</button>
+									<button class="btn btn-danger users-table__body__item__delete-button" onclick="deleteUserOperation('${user.username}')">Eliminar</button>
 							</td>
 						</tr>
 		`);
@@ -326,8 +347,8 @@ async function showRequestsInView(requests) {
 							<button class="btn btn-primary requests-table__body__item__authorize-button" onclick="authorizeRequestOperation(${request.id})" ${requestState.id == 2 ? '' : 'hidden'}>Autorizar</button>
 														<button class="btn btn-primary requests-table__body__item__validate-button" onclick="validateRequestOperation(${request.id})" ${requestState.id == 1 ? '' : 'hidden'}>Validar</button>
 							<button class="btn btn-primary requests-table__body__item__approve-button" onclick="approveRequestOperation(${request.id})" ${requestState.id == 3 ? '' : 'hidden'}>Atender</button>
-								<button class="btn btn-primary requests-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-request-modal" onclick="editRequestOperation(${request.id})">Actualizar</button>
-									<button class="btn btn-primary requests-table__body__item__delete-button" onclick="deleteRequestOperation(${request.id})">Eliminar</button>
+								<button class="btn btn-warning requests-table__body__item__edit-button" data-bs-toggle="modal" data-bs-target="#edit-request-modal" onclick="editRequestOperation(${request.id})">Actualizar</button>
+									<button class="btn btn-danger requests-table__body__item__delete-button" onclick="deleteRequestOperation(${request.id})">Eliminar</button>
 							</td>
 						</tr>
 		`);
@@ -354,7 +375,9 @@ function showDocumentsInView(documents) {
 							<div class="bg-white card shadow-sm">
 								<div class="card-body">
 									<div class="row align-items-center justify-content-center">
-										<div class="col-md-2">Icon</div>
+										<div class="col-md-2">
+											<img src="${contextPath}/resources/img/icono-pdf.png" width="100%">
+										</div>
 										<div class="col-md-7">
 											<h2 class="card-title h4 documents-list__item__title">${document.name}</h2>
 											<p class="card-text fw-light fst-italic">${document.description}</p>
@@ -366,7 +389,7 @@ function showDocumentsInView(documents) {
 													<i class="bi bi-x documents-list__item__delete-button" style="font-size: 1.5rem;" onclick='deleteDocumentOperation(${document.id})'></i>
 												</div>
 												<div class="col">
-													<i class="bi bi-download documents-list__item__download-button" style="font-size: 2.5rem;" onclick='downloadDocumentOperation(${document.fileId})'></i>
+													<i class="bi bi-download documents-list__item__download-button" style="font-size: 2.5rem;" onclick="downloadDocumentOperation('${document.fileId}')"></i>
 												</div>
 											</div>
 										</div>
@@ -378,31 +401,31 @@ function showDocumentsInView(documents) {
 	});
 }
 
-function showDangerAlert(element, message) {
+function showDangerAlert(message) {
 	const container = document.createElement("div");
 	let alert = `
-	<div class="alert alert-danger" role="alert">
+	<div class="alert alert-danger appears-in-top-center text-center shadow-sm" role="alert">
 	 ${message}
 	</div>
 	`
 	container.innerHTML = alert;
-	element.prepend(container);
+	$('body').prepend(container);
 
 	setTimeout(function() {
 		container.remove();
 	}, 3000);
 }
 
-function showSuccessAlert(element, message) {
+function showSuccessAlert(message) {
 	const container = document.createElement("div");
 	let alert = `
-	<div class="alert alert-success" role="alert">
+	<div class="alert alert-success appears-in-top-center text-center shadow-sm" role="alert">
 	 ${message}
 	</div>
 	`
 	container.innerHTML = alert;
-	element.prepend(container);
-
+	$('body').prepend(container);
+	
 	setTimeout(function() {
 		container.remove();
 	}, 3000);
@@ -414,6 +437,7 @@ function showSuccessAlert(element, message) {
 
 async function downloadDocumentOperation(id) {
 	let file = await downloadDocument(id);
+	let fileObject = await getFile(id);
 	let link = document.createElement('a');
 	let blob = new Blob([file], { type: "application/pdf" });
 	let reader = new FileReader();
@@ -421,7 +445,7 @@ async function downloadDocumentOperation(id) {
 	reader.readAsDataURL(blob);
 	reader.onload = function() {
 		link.href = reader.result;
-		link.download = "asdf.pdf";
+		link.download = fileObject.filename;
 		link.click();
 	}
 }
@@ -433,10 +457,17 @@ async function editDocumentOperation(id) {
 	$("#edit-document-description").val(document.description);
 	$("#edit-document-upload-date").val(dateFormat(new Date(document.uploadDate), "yyyy-MM-dd"));
 	$("#edit-document-file").val(document.documentName);
+	$("#edit-document-accept-button").attr("document-id", id);
 }
 
 async function deleteDocumentOperation(id) {
 	let documentsDeleted = await deleteDocument(id);
+
+	if (documentsDeleted == 1) {
+		showSuccessAlert("Documento eliminado correctamente");
+	} else {
+		showDangerAlert("Hubo un error al eliminar el documento")
+	}
 
 	getDocumentsInView();
 }
@@ -445,9 +476,9 @@ async function deleteUserOperation(username) {
 	let usersDeleted = await deleteUser(username);
 
 	if (usersDeleted == 1) {
-		showSuccessAlert($(".main-content"), "Usuario eliminado correctamente");
+		showSuccessAlert("Usuario eliminado correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al eliminar el usuario")
+		showDangerAlert("Hubo un error al eliminar el usuario")
 	}
 
 	getUsersInView();
@@ -457,9 +488,9 @@ async function authorizeRequestOperation(id) {
 	let requestUpdated = await authorizeRequest(id);
 
 	if (requestUpdated == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud actualizada correctamente");
+		showSuccessAlert("Solicitud actualizada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al actualizar la solicitud")
+		showDangerAlert("Hubo un error al actualizar la solicitud")
 	}
 
 	getRequestsInView();
@@ -469,9 +500,9 @@ async function approveRequestOperation(id) {
 	let requestUpdated = await approveRequest(id);
 
 	if (requestUpdated == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud actualizada correctamente");
+		showSuccessAlert("Solicitud actualizada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al actualizar la solicitud")
+		showDangerAlert("Hubo un error al actualizar la solicitud")
 	}
 
 	getRequestsInView();
@@ -492,9 +523,9 @@ async function validateRequestOperation(id) {
 	let requestUpdated = await validateRequest(id);
 
 	if (requestUpdated == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud actualizada correctamente");
+		showSuccessAlert("Solicitud actualizada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al actualizar la solicitud")
+		showDangerAlert("Hubo un error al actualizar la solicitud")
 	}
 
 	getRequestsInView();
@@ -504,9 +535,9 @@ async function deleteRequestOperation(id) {
 	let requestsDeleted = await deleteRequest(id);
 
 	if (requestsDeleted == 1) {
-		showSuccessAlert($(".main-content"), "Solicitud eliminada correctamente");
+		showSuccessAlert("Solicitud eliminada correctamente");
 	} else {
-		showDangerAlert($(".main-content"), "Hubo un error al eliminar la solicitud")
+		showDangerAlert("Hubo un error al eliminar la solicitud")
 	}
 
 	getRequestsInView();
@@ -519,6 +550,18 @@ async function editUserOperation(username) {
 	$("#edit-user-password").val(user.password);
 	$("#edit-user-email").val(user.email);
 	$("#edit-user-rol").val(user.roleId);
+}
+
+async function openRegisterRequestModal() {
+	let currentDate = dateFormat(new Date(), "yyyy-MM-dd");
+
+	$("#request-creation-date").val(currentDate);
+}
+
+async function openRegisterDocumentModal() {
+	let currentDate = dateFormat(new Date(), "yyyy-MM-dd");
+
+	$("#document-upload-date").val(currentDate);
 }
 
 /**
@@ -547,7 +590,12 @@ function getDocuments() {
 
 function deleteDocument(id) {
 	let result = $.ajax({
-		url: `${contextPath}/documentos/${id}`, method: "DELETE"
+		url: `${contextPath}/documentos/${id}`, method: "DELETE",
+		statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -616,7 +664,23 @@ function getDocument(id) {
 
 function registerDocument(formData) {
 	let result = $.ajax({
-		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false
+		url: `${contextPath}/documentos/`, method: "POST", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false, xhrFields: { responseType: 'json' }, statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
+	});
+
+	return result;
+}
+
+function editDocument(formData) {
+	let result = $.ajax({
+		url: `${contextPath}/documentos/`, method: "PUT", data: formData, contentType: 'multipart/form-data', processData: false, contentType: false, xhrFields: { responseType: 'json' }, statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -624,6 +688,12 @@ function registerDocument(formData) {
 
 function getRequests() {
 	let result = $.get(`${contextPath}/solicitudes/`);
+
+	return result;
+}
+
+function getFile(id) {
+	let result = $.get(`${contextPath}/archivo/${id}`);
 
 	return result;
 }
@@ -670,7 +740,11 @@ function getRequestStates() {
 
 function validateRequest(id) {
 	let result = $.ajax({
-		url: `${contextPath}/solicitudes/validar/?id=${id}`, method: "PUT"
+		url: `${contextPath}/solicitudes/validar/?id=${id}`, method: "PUT", statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -678,7 +752,11 @@ function validateRequest(id) {
 
 function approveRequest(id) {
 	let result = $.ajax({
-		url: `${contextPath}/solicitudes/aprobar/?id=${id}`, method: "PUT"
+		url: `${contextPath}/solicitudes/aprobar/?id=${id}`, method: "PUT", statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;
@@ -686,7 +764,11 @@ function approveRequest(id) {
 
 function authorizeRequest(id) {
 	let result = $.ajax({
-		url: `${contextPath}/solicitudes/autorizar/?id=${id}`, method: "PUT"
+		url: `${contextPath}/solicitudes/autorizar/?id=${id}`, method: "PUT", statusCode: {
+			401: function() {
+				showDangerAlert("No tienes los permisos suficientes para realizar esta acción")
+			}
+		}
 	});
 
 	return result;

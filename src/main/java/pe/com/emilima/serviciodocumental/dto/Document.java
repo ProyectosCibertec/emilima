@@ -7,13 +7,13 @@ public class Document {
 	private String name;
 	private String description;
 	private Date uploadDate;
-	private int fileId;
+	private String fileId;
 
 	public Document() {
 
 	}
 
-	public Document(int id, String name, String description, Date uploadDate, int fileId) {
+	public Document(int id, String name, String description, Date uploadDate, String fileId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -53,11 +53,11 @@ public class Document {
 		this.uploadDate = uploadDate;
 	}
 
-	public int getFileId() {
+	public String getFileId() {
 		return fileId;
 	}
 
-	public void setFileId(int fileId) {
+	public void setFileId(String fileId) {
 		this.fileId = fileId;
 	}
 }
