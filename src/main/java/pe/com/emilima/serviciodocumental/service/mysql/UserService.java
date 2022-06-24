@@ -34,6 +34,12 @@ public class UserService implements IUserDAO {
 		// TODO Auto-generated method stub
 		return userDao.edit(user);
 	}
+	
+	@Override
+	public int editAccountWithPhoto(User user) {
+		// TODO Auto-generated method stub
+		return userDao.editAccountWithPhoto(user);
+	}
 
 	@Override
 	public int delete(String username) {
@@ -44,5 +50,11 @@ public class UserService implements IUserDAO {
 	@Override
 	public User login(String username, String password) {
 		return userDao.login(username, password);
+	}
+
+	@Override
+	public int editAccountWithoutPhoto(User user) {
+		// TODO Auto-generated method stub
+		return userDao.editAccountWithoutPhoto(user);
 	}
 }

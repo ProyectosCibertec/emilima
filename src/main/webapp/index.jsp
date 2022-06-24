@@ -69,12 +69,13 @@
 					<button
 						class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
 						id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-						<img src="https://github.com/mdo.png" alt="" width="32"
-							height="32" class="rounded-circle me-2"> <strong>${ sessionScope.loginedUser.username }</strong>
+						<img alt="" width="32" height="32" class="rounded-circle me-2"
+							id="user-photo"> <strong>${ sessionScope.loginedUser.username }</strong>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 						aria-labelledby="dropdownUser1">
-						<li><button class="dropdown-item">Configuración</button></li>
+						<li><a class="dropdown-item"
+							href="${pageContext.request.contextPath}/cuenta">Configuración</a></li>
 						<li><hr class="dropdown-divider"></li>
 						<li><button class="dropdown-item" id="logout-button">Salir</button></li>
 					</ul>

@@ -12,6 +12,10 @@ public interface IUserDAO {
 	int add(User user);
 
 	int edit(User user);
+	
+	int editAccountWithPhoto(User user);
+	
+	int editAccountWithoutPhoto(User user);
 
 	int delete(String username);
 

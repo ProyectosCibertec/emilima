@@ -1,3 +1,5 @@
+let session;
+
 $(document).ready(function() {
 	app();
 });
@@ -6,8 +8,14 @@ $(document).ready(function() {
  * Document init
  */
 
-function app() {
+async function app() {
 	let pathnames = location.pathname.split("/");
+
+	session = await getSession();
+	
+	if (session.session) {
+		loadUserPhotoOperation(session.session.attributes.loginedUser.photoId);		
+	}
 
 	if (pathnames.includes("documentos")) {
 		documents();
@@ -21,6 +29,10 @@ function app() {
 		users();
 	}
 
+	if (pathnames.includes("cuenta")) {
+		account();
+	}
+	
 	$("#logout-button").click(function() {
 		logout();
 	});
@@ -116,13 +128,25 @@ function users() {
 	});
 }
 
+function account() {
+	getAccountInView();
+
+	$("#edit-user-photo-check").change(function() {
+		let editUserPhotoInput = $("#edit-user-photo");
+		if (editUserPhotoInput.attr("disabled"))
+			editUserPhotoInput.attr("disabled", false);
+		else
+			editUserPhotoInput.attr("disabled", true);
+	});
+}
+
 async function registerDocumentInView() {
 	let formData = new FormData();
 
 	formData.append("name", $("#document-name").val());
 	formData.append("description", $("#document-description").val());
 	formData.append("uploadDate", $("#document-upload-date").val());
-	formData.append("documentFile", $("#document-file")[0].files[0]);
+	formData.append("file", $("#document-file")[0].files[0]);
 
 	let result = await registerDocument(formData);
 
@@ -168,6 +192,14 @@ async function getUsersInView() {
 	let users = await getUsers();
 
 	showUsersInView(users);
+}
+
+async function getAccountInView() {
+	let currentAccountUsername = $("#edit-user-name").val();
+	let account = await getUser(currentAccountUsername);
+
+	$("#edit-user-password").val(account.password);
+	$("#edit-user-email").val(account.email);
 }
 
 async function getRequestsInView() {
@@ -425,7 +457,7 @@ function showSuccessAlert(message) {
 	`
 	container.innerHTML = alert;
 	$('body').prepend(container);
-	
+
 	setTimeout(function() {
 		container.remove();
 	}, 3000);
@@ -437,16 +469,28 @@ function showSuccessAlert(message) {
 
 async function downloadDocumentOperation(id) {
 	let file = await downloadDocument(id);
-	let fileObject = await getFile(id);
 	let link = document.createElement('a');
-	let blob = new Blob([file], { type: "application/pdf" });
+	let blob = new Blob([file.result], { type: "application/pdf" });
 	let reader = new FileReader();
 
 	reader.readAsDataURL(blob);
 	reader.onload = function() {
 		link.href = reader.result;
-		link.download = fileObject.filename;
+		link.download = file.filename.split('=')[1];
 		link.click();
+		link.remove();
+	}
+}
+
+async function loadUserPhotoOperation(userPhotoId) {
+	let file = await loadUserImage(userPhotoId);
+	let userImg = $('#user-photo');
+	let blob = new Blob([file.result], { type: "image/*" });
+	let reader = new FileReader();
+
+	reader.readAsDataURL(blob);
+	reader.onload = function() {
+		userImg[0].src = reader.result;
 	}
 }
 
@@ -576,10 +620,38 @@ function logout() {
 	location.reload();
 }
 
-function downloadDocument(id) {
-	let result = $.ajax({ url: `${contextPath}/descargar/${id}`, method: "GET", xhrFields: { responseType: 'arraybuffer' } });
+async function downloadDocument(id) {
+	let filename;
 
-	return result;
+	let result = await $.ajax({
+		url: `${contextPath}/descargar/${id}`, method: "GET", xhrFields: { responseType: 'arraybuffer' }, statusCode: {
+			200: function(data, status, xhr) {
+				filename = xhr.getResponseHeader('Content-Disposition');
+			}
+		}
+	});
+
+	return {
+		result: result,
+		filename: filename
+	};
+}
+
+async function loadUserImage(id) {
+	let filename;
+
+	let result = await $.ajax({
+		url: `${contextPath}/descargar/${id}`, method: "GET", xhrFields: { responseType: 'arraybuffer' }, statusCode: {
+			200: function(data, status, xhr) {
+				filename = xhr.getResponseHeader('Content-Disposition');
+			}
+		}
+	});
+
+	return {
+		result: result,
+		filename: filename
+	};
 }
 
 function getDocuments() {
@@ -692,12 +764,6 @@ function getRequests() {
 	return result;
 }
 
-function getFile(id) {
-	let result = $.get(`${contextPath}/archivo/${id}`);
-
-	return result;
-}
-
 function deleteRequest(id) {
 	let result = $.ajax({
 		url: `${contextPath}/solicitudes/${id}`, method: "DELETE"
@@ -777,6 +843,12 @@ function authorizeRequest(id) {
 function getRequest(id) {
 	let result = $.get(`${contextPath}/solicitudes/?id=${id}`);
 
+	return result;
+}
+
+async function getSession() {
+	let result = await $.get(`${contextPath}/sesion`);
+	
 	return result;
 }
 
