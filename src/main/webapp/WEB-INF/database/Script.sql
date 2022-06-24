@@ -20,6 +20,18 @@ ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 
 
 -- -----------------------------------------------------
+-- Table `emilima`.`file`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `emilima`.`file` ;
+
+CREATE TABLE IF NOT EXISTS `emilima`.`file` (
+  `id` VARCHAR(48),
+  `filename` TEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
+
+
+-- -----------------------------------------------------
 -- Table `emilima`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `emilima`.`user` ;
@@ -29,25 +41,20 @@ CREATE TABLE IF NOT EXISTS `emilima`.`user` (
   `password` VARCHAR(45) NOT NULL,
   `email` VARCHAR(100) NULL,
   `role_id` INT NULL,
+  `photo_id` VARCHAR(48) NULL DEFAULT 'c4042c2a-f106-11ec-8ea0-0242ac120002',
   PRIMARY KEY (`username`),
   INDEX `role_idx` (`role_id` ASC) VISIBLE,
+  INDEX `photo_idx` (`photo_id` ASC) VISIBLE,
   CONSTRAINT `role`
     FOREIGN KEY (`role_id`)
     REFERENCES `emilima`.`role` (`id`)
     ON DELETE set null
+    ON UPDATE set null,
+  CONSTRAINT `photo`
+    FOREIGN KEY (`photo_id`)
+    REFERENCES `emilima`.`file` (`id`)
+    ON DELETE set null
     ON UPDATE set null)
-ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
-
-
--- -----------------------------------------------------
--- Table `emilima`.`file`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `emilima`.`file` ;
-
-CREATE TABLE IF NOT EXISTS `emilima`.`file` (
-  `id` VARCHAR(48),
-  `filename` TEXT NOT NULL,
-  PRIMARY KEY (`id`))
 ENGINE = InnoDB character set = latin1 collate = latin1_spanish_ci;
 
 
@@ -130,6 +137,7 @@ INSERT INTO `file`(`id`, `filename`) VALUES ("dca3a58c-ef10-11ec-8ea0-0242ac1200
 INSERT INTO `file`(`id`, `filename`) VALUES ("e2d96144-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
 INSERT INTO `file`(`id`, `filename`) VALUES ("eb535816-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
 INSERT INTO `file`(`id`, `filename`) VALUES ("f0783f8c-ef10-11ec-8ea0-0242ac120002", "ejemplo.pdf");
+INSERT INTO `file`(`id`, `filename`) VALUES ("c4042c2a-f106-11ec-8ea0-0242ac120002", "user-photo-default.png");
 
 INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("Documento 1", "Este documento contiene información de un inmueble", "2022-03-03", "dca3a58c-ef10-11ec-8ea0-0242ac120002");
 INSERT INTO `document`(`name`, `description`, `upload_date`, `file_id`) VALUES ("Documento 2", "Este documento contiene información de un inmueble", "2022-03-03", "e2d96144-ef10-11ec-8ea0-0242ac120002");

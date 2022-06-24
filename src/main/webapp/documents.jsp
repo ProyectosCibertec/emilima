@@ -69,12 +69,13 @@
 					<button
 						class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
 						id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-						<img src="https://github.com/mdo.png" alt="" width="32"
-							height="32" class="rounded-circle me-2"> <strong>${ sessionScope.loginedUser.username }</strong>
+						<img alt="" width="32" height="32" class="rounded-circle me-2"
+							id="user-photo"> <strong>${ sessionScope.loginedUser.username }</strong>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 						aria-labelledby="dropdownUser1">
-						<li><button class="dropdown-item">Configuración</button></li>
+						<li><a class="dropdown-item"
+							href="${pageContext.request.contextPath}/cuenta">Configuración</a></li>
 						<li><hr class="dropdown-divider"></li>
 						<li><button class="dropdown-item" id="logout-button">Salir</button></li>
 					</ul>
@@ -84,8 +85,8 @@
 				<div class="d-flex justify-content-between align-items-center">
 					<h1>Documentos</h1>
 					<button type="button" class="btn btn-primary"
-						data-bs-toggle="modal" data-bs-target="#register-document-modal" onclick="openRegisterDocumentModal()">Subir
-						documento</button>
+						data-bs-toggle="modal" data-bs-target="#register-document-modal"
+						onclick="openRegisterDocumentModal()">Subir documento</button>
 				</div>
 
 				<div class="my-4">
@@ -174,9 +175,7 @@
 								name="document-date" id="edit-document-upload-date" readonly
 								required>
 						</div>
-						<div class="mb-3" id="edit-document-file">
-							
-						</div>
+						<div class="mb-3" id="edit-document-file"></div>
 					</form>
 				</div>
 				<div class="modal-footer">

@@ -44,19 +44,18 @@ public class UploadFilesServlet extends HttpServlet {
 	}
 
 	private void uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		Part documentFilePart = request.getPart("documentFile");
+		Part filePart = request.getPart("file");
 		UUID uuid = UUID.randomUUID();
 		String uuidString = uuid.toString();
-		byte[] fileNameInBytes = documentFilePart.getSubmittedFileName().getBytes();
+		byte[] fileNameInBytes = filePart.getSubmittedFileName().getBytes();
 		String fileName = new String(fileNameInBytes, "UTF-8");
 		String fileNameWithUuid = uuidString + "." + FilenameUtils.getExtension(fileName);
 		pe.com.emilima.serviciodocumental.dto.File file = new pe.com.emilima.serviciodocumental.dto.File();
 		
 		file.setId(uuidString);
 		file.setFilename(fileName);
-		documentFilePart.write(fileUploadsLocation + File.separator + fileNameWithUuid);
+		filePart.write(fileUploadsLocation + File.separator + fileNameWithUuid);
 		fileService.add(file);
 		request.setAttribute("fileId", uuidString);
-		
 	}
 }

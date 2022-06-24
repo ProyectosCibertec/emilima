@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Documentos Emilima | Login</title>
+<title>Documentos Emilima | Usuarios</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -43,25 +43,25 @@
 						href="${pageContext.request.contextPath}/"
 						class="nav-link text-dark" aria-current="page"> <svg
 								class="bi me-2" width="16" height="16">
-						<use xlink:href="#home" /></svg> Inicio
+						<use xlink:href="#index" /></svg> Inicio
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/documentos/listar"
 						class="nav-link text-dark"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#speedometer2" /></svg> Documentos
+						<use xlink:href="#documents" /></svg> Documentos
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/solicitudes/listar"
 						class="nav-link text-dark"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#table" /></svg> Solicitudes
+						<use xlink:href="#requests" /></svg> Solicitudes
 					</a></li>
 					<li><a
 						href="${pageContext.request.contextPath}/usuarios/listar"
-						class="nav-link text-dark"> <svg class="bi me-2" width="16"
+						class="nav-link active"> <svg class="bi me-2" width="16"
 								height="16">
-						<use xlink:href="#grid" /></svg> Usuarios
+						<use xlink:href="#users" /></svg> Usuarios
 					</a></li>
 				</ul>
 				<hr>
@@ -81,14 +81,51 @@
 					</ul>
 				</div>
 			</div>
-			<div
-				class="col-md-9 py-5 main-content d-flex flex-column align-items-center justify-content-center">
-				<h1 class="text-center">ERROR 401 UNAUTHORIZED</h1>
-				<p>No estás autorizado para acceder</p>
+			<div class="col-md-9 py-5 main-content h-100">
+				<div class="d-flex justify-content-between align-items-center">
+					<h1>Configuración</h1>
+				</div>
+				<div class="card col-md-5">
+					<div class="card-body">
+						<form id="edit-user-form-data" method="POST" action="/cuenta"
+							enctype="multipart/form-data">
+							<div class="mb-3">
+								<label for="edit-user-name" class="form-label">Nombre de
+									usuario</label> <input type="text" class="form-control"
+									id="edit-user-name" name="user-name" required readonly
+									value="${ sessionScope.loginedUser.username }">
+							</div>
+							<div class="mb-3">
+								<label for="edit-user-password" class="form-label">Contraseña</label>
+								<input type="password" class="form-control"
+									id="edit-user-password" name="user-password" required>
+							</div>
+							<div class="mb-3">
+								<label for="edit-user-email" class="form-label">Email</label> <input
+									type="email" class="form-control" name="user-email"
+									id="edit-user-email" required>
+							</div>
+							<div class="mb-3">
+								<label for="edit-user-photo" class="form-label">Foto de
+									perfil</label> <input class="form-control" type="file"
+									id="edit-user-photo" name="file" accept="image/*"
+									disabled>
+							</div>
+							<div class="mb-3 form-check">
+								<input type="checkbox" class="form-check-input"
+									id="edit-user-photo-check"> <label
+									class="form-check-label" for="edit-user-photo-check">Cambiar
+									foto</label>
+							</div>
+							<button type="submit" class="btn btn-primary">Actualizar
+								datos</button>
+						</form>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
-
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

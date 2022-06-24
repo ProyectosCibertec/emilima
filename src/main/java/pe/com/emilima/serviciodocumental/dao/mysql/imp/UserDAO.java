@@ -33,7 +33,7 @@ public class UserDAO implements IUserDAO {
 
 			while (resultSet.next()) {
 				user = new User(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3),
-						resultSet.getInt(4));
+						resultSet.getInt(4), resultSet.getString(5));
 				users.add(user);
 			}
 		} catch (SQLException se) {
@@ -75,7 +75,7 @@ public class UserDAO implements IUserDAO {
 
 			while (resultSet.next()) {
 				user = new User(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3),
-						resultSet.getInt(4));
+						resultSet.getInt(4), resultSet.getString(5));
 			}
 		} catch (SQLException se) {
 			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
@@ -183,6 +183,47 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
+	public int editAccountWithPhoto(User user) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connection = new MySQLConnection().getConnection();
+			preparedStatement = connection
+					.prepareStatement("UPDATE user SET password = ?, email = ?, photo_id = ? WHERE username = ?");
+
+			preparedStatement.setString(1, user.getPassword());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setString(3, user.getPhotoId());
+			preparedStatement.setString(4, user.getUsername());
+
+			result = preparedStatement.executeUpdate();
+		} catch (SQLException se) {
+			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
+			logger.info(MessageFormat.format("SQL state: {0}", se.getSQLState()));
+			se.printStackTrace();
+		} catch (Exception e) {
+			logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException se) {
+				logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
+				logger.info(MessageFormat.format("SQL state: {0}", se.getSQLState()));
+				se.printStackTrace();
+			} catch (Exception e) {
+				logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
+	@Override
 	public int delete(String username) {
 		// TODO Auto-generated method stub
 		int result = 0;
@@ -258,4 +299,43 @@ public class UserDAO implements IUserDAO {
 		return user;
 	}
 
+	@Override
+	public int editAccountWithoutPhoto(User user) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connection = new MySQLConnection().getConnection();
+			preparedStatement = connection
+					.prepareStatement("UPDATE user SET password = ?, email = ? WHERE username = ?");
+
+			preparedStatement.setString(1, user.getPassword());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setString(3, user.getUsername());
+
+			result = preparedStatement.executeUpdate();
+		} catch (SQLException se) {
+			logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
+			logger.info(MessageFormat.format("SQL state: {0}", se.getSQLState()));
+			se.printStackTrace();
+		} catch (Exception e) {
+			logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException se) {
+				logger.info(MessageFormat.format("SQL Exception: {0}", se.getMessage()));
+				logger.info(MessageFormat.format("SQL state: {0}", se.getSQLState()));
+				se.printStackTrace();
+			} catch (Exception e) {
+				logger.info(MessageFormat.format("Exception: {0}", e.getMessage()));
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
 }

@@ -66,12 +66,13 @@
 					<button
 						class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
 						id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-						<img src="https://github.com/mdo.png" alt="" width="32"
-							height="32" class="rounded-circle me-2"> <strong>${ sessionScope.loginedUser.username }</strong>
+						<img alt="" width="32" height="32" class="rounded-circle me-2"
+							id="user-photo"> <strong>${ sessionScope.loginedUser.username }</strong>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
 						aria-labelledby="dropdownUser1">
-						<li><button class="dropdown-item">Configuración</button></li>
+						<li><a class="dropdown-item"
+							href="${pageContext.request.contextPath}/cuenta">Configuración</a></li>
 						<li><hr class="dropdown-divider"></li>
 						<li><button class="dropdown-item" id="logout-button">Salir</button></li>
 					</ul>
@@ -81,8 +82,8 @@
 				<div class="d-flex justify-content-between align-items-center">
 					<h1>Solicitudes</h1>
 					<button type="button" class="btn btn-primary"
-						data-bs-toggle="modal" data-bs-target="#register-request-modal" onclick="openRegisterRequestModal()">Registrar
-						solicitud</button>
+						data-bs-toggle="modal" data-bs-target="#register-request-modal"
+						onclick="openRegisterRequestModal()">Registrar solicitud</button>
 				</div>
 
 				<form class="my-4">
@@ -168,8 +169,8 @@
 				<div class="modal-body">
 					<form id="edit-request-form-data">
 						<div class="mb-3">
-							<label for="edit-request-name" class="form-label">Nombre</label> <input
-								type="text" class="form-control" id="edit-request-name"
+							<label for="edit-request-name" class="form-label">Nombre</label>
+							<input type="text" class="form-control" id="edit-request-name"
 								name="request-name" required>
 						</div>
 						<div class="mb-3">
@@ -186,8 +187,7 @@
 						<div class="mb-3">
 							<label for="edit-request-user">Usuario que registra la
 								solicitud</label> <input type="text" class="form-control"
-								name="request-user" id="edit-request-user" readonly
-								 required>
+								name="request-user" id="edit-request-user" readonly required>
 						</div>
 						<div class="mb-3">
 							<label for="edit-request-document">Documento</label> <select

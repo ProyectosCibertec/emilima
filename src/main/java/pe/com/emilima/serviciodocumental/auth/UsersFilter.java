@@ -51,6 +51,12 @@ public class UsersFilter extends HttpFilter implements Filter {
 		String requestURI = httpServletRequest.getRequestURI();
 
 		logger.log(Level.INFO, "--- FILTER: UsersFilter ---\n URI: {0}", requestURI);
+		
+		if (httpServletRequest.getParameter("username") != null) {
+			chain.doFilter(httpServletRequest, httpServletResponse);
+			
+			return;
+		}
 
 		if (!isAdminUser(httpServletRequest)) {
 			RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/error401.jsp");
